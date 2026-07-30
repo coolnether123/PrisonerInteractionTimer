@@ -10,6 +10,8 @@
     <li>
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
     </li>
     <li>
       <packageId>CoolNether123.Spine</packageId>
@@ -20,5 +22,7 @@
     <li>brrainz.harmony</li>
     <li>CoolNether123.Spine</li>
   </loadAfter>
-  <description>Live vanilla prisoner-interaction readiness timers and eligibility explanations.</description>
+  <description>Shows the selected prisoner's live vanilla interaction cooldown, next eligible time, active interaction modes, and current blockers such as sleep, incapacity, or a missing eligible warden.
+
+The timer uses RimWorld game ticks and never changes cooldowns, assigns wardens, or performs interactions. Optional per-prisoner and per-mode notifications fire once when a watched prisoner becomes ready.</description>
 </ModMetaData>

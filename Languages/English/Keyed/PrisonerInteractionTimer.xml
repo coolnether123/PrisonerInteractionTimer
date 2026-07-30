@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <PIT_ModName>Prisoner Interaction Timer</PIT_ModName>
+  <PIT_TimerHeader>Interaction readiness</PIT_TimerHeader>
+  <PIT_ModeLine>Mode: {0}</PIT_ModeLine>
+  <PIT_NextLine>Next eligible: {0}</PIT_NextLine>
+  <PIT_StatusReady>Ready now</PIT_StatusReady>
+  <PIT_StatusCooldown>{0}</PIT_StatusCooldown>
+  <PIT_StatusDisabled>Not scheduled</PIT_StatusDisabled>
+  <PIT_StatusNotPrisoner>Not a prisoner</PIT_StatusNotPrisoner>
+  <PIT_StatusDailyLimit>Daily limit</PIT_StatusDailyLimit>
+  <PIT_StatusAsleep>Asleep</PIT_StatusAsleep>
+  <PIT_StatusIncapacitated>Incapacitated</PIT_StatusIncapacitated>
+  <PIT_StatusMentalState>Mental state</PIT_StatusMentalState>
+  <PIT_StatusInsecure>Not secure</PIT_StatusInsecure>
+  <PIT_StatusUnavailable>Unavailable</PIT_StatusUnavailable>
+  <PIT_StatusNoWarden>No warden</PIT_StatusNoWarden>
+  <PIT_StatusModeBlocked>Mode blocked</PIT_StatusModeBlocked>
+  <PIT_ReadyNow>Ready now</PIT_ReadyNow>
+  <PIT_NotScheduled>Not scheduled</PIT_NotScheduled>
+  <PIT_WhenConditionsMet>When conditions are met</PIT_WhenConditionsMet>
+  <PIT_NotifyThisMode>Notify when ready for this mode</PIT_NotifyThisMode>
+  <PIT_TooltipVanilla>This reports RimWorld's existing interaction gate. It does not alter timing or order a warden.</PIT_TooltipVanilla>
+  <PIT_BlockersHeader>Current blockers:</PIT_BlockersHeader>
+  <PIT_ReasonNotPrisoner>Not a colony prisoner.</PIT_ReasonNotPrisoner>
+  <PIT_ReasonDisabled>The selected prisoner policy does not schedule a timed interaction.</PIT_ReasonDisabled>
+  <PIT_ReasonCooldown>The vanilla minimum interaction interval is still active.</PIT_ReasonCooldown>
+  <PIT_ReasonDailyLimit>The prisoner has reached RimWorld's daily interaction limit.</PIT_ReasonDailyLimit>
+  <PIT_ReasonAsleep>The prisoner is asleep.</PIT_ReasonAsleep>
+  <PIT_ReasonIncapacitated>The prisoner is downed and not in a bed.</PIT_ReasonIncapacitated>
+  <PIT_ReasonMentalState>The prisoner is in a mental state.</PIT_ReasonMentalState>
+  <PIT_ReasonInsecure>The prisoner is not currently secure or otherwise available to wardens.</PIT_ReasonInsecure>
+  <PIT_ReasonUnspawned>The prisoner is not currently spawned on a map.</PIT_ReasonUnspawned>
+  <PIT_ReasonNoWarden>No eligible, reachable warden with the Warden job enabled is available.</PIT_ReasonNoWarden>
+  <PIT_ReasonModeRequirement>No active interaction mode currently has its mode-specific requirements met.</PIT_ReasonModeRequirement>
+  <PIT_ReasonUnknown>Waiting for a vanilla eligibility condition.</PIT_ReasonUnknown>
+  <PIT_ReadyMessage>{0} is ready for {1}.</PIT_ReadyMessage>
+  <PIT_SettingsDisplayHeader>Timer display</PIT_SettingsDisplayHeader>
+  <PIT_SettingsEnabledLabel>Show prisoner interaction timers</PIT_SettingsEnabledLabel>
+  <PIT_SettingsEnabledTooltip>Adds vanilla readiness timing and blockers to the selected prisoner's Prisoner tab.</PIT_SettingsEnabledTooltip>
+  <PIT_SettingsFormatLabel>Countdown format</PIT_SettingsFormatLabel>
+  <PIT_SettingsFormatTooltip>Choose how remaining game time is shown.</PIT_SettingsFormatTooltip>
+  <PIT_SettingsReasonsLabel>Show detailed blocker explanations</PIT_SettingsReasonsLabel>
+  <PIT_SettingsReasonsTooltip>Lists all currently known vanilla blockers in the timer tooltip.</PIT_SettingsReasonsTooltip>
+  <PIT_SettingsNotificationsHeader>Notifications</PIT_SettingsNotificationsHeader>
+  <PIT_SettingsNotificationsLabel>Enable per-prisoner ready notifications</PIT_SettingsNotificationsLabel>
+  <PIT_SettingsNotificationsTooltip>When enabled, the Prisoner tab offers an opt-in alert for the prisoner's current interaction mode. Alerts fire once per not-ready to ready transition.</PIT_SettingsNotificationsTooltip>
+  <PIT_SettingsFormatHours>Game hours</PIT_SettingsFormatHours>
+  <PIT_SettingsFormatTicks>Ticks</PIT_SettingsFormatTicks>
+  <PIT_SettingsFormatHuman>Human-readable</PIT_SettingsFormatHuman>
+  <PIT_SettingsFormatHoursDescription>Decimal RimWorld hours.</PIT_SettingsFormatHoursDescription>
+  <PIT_SettingsFormatTicksDescription>Exact RimWorld game ticks.</PIT_SettingsFormatTicksDescription>
+  <PIT_SettingsFormatHumanDescription>Compact days and hours.</PIT_SettingsFormatHumanDescription>
+</LanguageData>

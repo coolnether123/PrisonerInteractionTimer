@@ -1,36 +1,45 @@
-using UnityEngine;
-using Verse;
-using PrisonerInteractionTimer.Compatibility;
 using PrisonerInteractionTimer.Patches;
 using PrisonerInteractionTimer.Settings;
+using Spine.UI.SettingsFramework;
+using UnityEngine;
+using Verse;
 
 namespace PrisonerInteractionTimer.Bootstrap
 {
     public sealed class PrisonerInteractionTimerMod : Mod
     {
         private readonly PrisonerInteractionTimerSettings settings;
+        private readonly SettingsListDrawer settingsDrawer;
+        private SettingsViewMode settingsViewMode =
+            SettingsViewMode.Simple;
 
         public PrisonerInteractionTimerMod(ModContentPack content)
             : base(content)
         {
             settings = GetSettings<PrisonerInteractionTimerSettings>();
-            CompatibilityRegistry.InitializeAll();
-            PatchInstaller.InstallAll();
+            Settings = settings;
+            settingsDrawer = new SettingsListDrawer(
+                new SettingsHierarchy(
+                    PrisonerInteractionTimerSettings.Definitions));
+
+            PrisonerTabPatchInstaller.Install();
+            NotificationHookInstaller.Install();
         }
+
+        public static PrisonerInteractionTimerSettings Settings { get; private set; }
 
         public override string SettingsCategory()
         {
-            return "Prisoner Interaction Timer";
+            return "PIT_ModName".Translate();
         }
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            var listing = new Listing_Standard();
-            listing.Begin(inRect);
-            listing.CheckboxLabeled(
-                "Feature enabled",
-                ref settings.FeatureEnabled);
-            listing.End();
+            settingsDrawer.Draw(
+                inRect,
+                settings,
+                ref settingsViewMode,
+                WriteSettings);
         }
     }
 }

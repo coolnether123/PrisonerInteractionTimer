@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using PrisonerInteractionTimer.Domain;
+using RimWorld;
+using Verse;
+
+namespace PrisonerInteractionTimer.Readiness
+{
+    public sealed class PrisonerReadinessSnapshot
+    {
+        public PrisonerReadinessSnapshot(
+            Pawn prisoner,
+            IReadOnlyList<PrisonerInteractionModeDef> modes,
+            InteractionTimerResult timer,
+            bool usesTimer,
+            IReadOnlyList<ReadinessBlockReason> blockers)
+        {
+            Prisoner = prisoner;
+            Modes = modes ?? Array.Empty<PrisonerInteractionModeDef>();
+            Timer = timer;
+            UsesTimer = usesTimer;
+            Blockers = blockers ?? Array.Empty<ReadinessBlockReason>();
+        }
+
+        public Pawn Prisoner { get; }
+
+        public IReadOnlyList<PrisonerInteractionModeDef> Modes { get; }
+
+        public InteractionTimerResult Timer { get; }
+
+        public bool UsesTimer { get; }
+
+        public IReadOnlyList<ReadinessBlockReason> Blockers { get; }
+
+        public bool IsEligibleNow =>
+            UsesTimer && Blockers.Count == 0;
+
+        public string ModeSignature =>
+            string.Join(
+                "|",
+                Modes.Select(mode => mode.defName));
+
+        public string ModeLabel
+        {
+            get
+            {
+                if (Modes.Count > 0)
+                {
+                    return string.Join(
+                        ", ",
+                        Modes.Select(mode =>
+                            mode.LabelCap.ToString()));
+                }
+
+                return Prisoner?.guest?.ExclusiveInteractionMode?
+                    .LabelCap.ToString() ?? "None".Translate();
+            }
+        }
+    }
+}
