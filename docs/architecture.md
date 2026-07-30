@@ -48,6 +48,12 @@ return to the main menu or a different save cannot leak watch state. A
 `GameComponentUtility.GameComponentTick` postfix supplies the same bounded
 250-tick polling cadence without adding a save-visible component type.
 
+The notification policy requires both the master feature switch and the
+notification switch before emitting a message. Polling still records each
+same-mode readiness state while either switch is disabled. A transition that
+occurs while disabled is therefore consumed without a message and cannot be
+replayed as a stale alert when the user re-enables the feature.
+
 ## Blocker resolution
 
 Cheap prisoner conditions are checked directly each draw. A warden scan is

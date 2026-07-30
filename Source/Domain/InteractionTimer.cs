@@ -165,4 +165,48 @@ namespace PrisonerInteractionTimer.Domain
             return hasBaseline && modeUnchanged && !wasReady && isReady;
         }
     }
+
+    public readonly struct ReadyNotificationPollResult
+    {
+        public ReadyNotificationPollResult(
+            bool shouldNotify,
+            bool hasBaseline,
+            bool wasReady)
+        {
+            ShouldNotify = shouldNotify;
+            HasBaseline = hasBaseline;
+            WasReady = wasReady;
+        }
+
+        public bool ShouldNotify { get; }
+
+        public bool HasBaseline { get; }
+
+        public bool WasReady { get; }
+    }
+
+    public static class ReadyNotificationPolicy
+    {
+        public static ReadyNotificationPollResult Evaluate(
+            bool featureEnabled,
+            bool notificationsEnabled,
+            bool hasBaseline,
+            bool wasReady,
+            bool isReady,
+            bool modeUnchanged)
+        {
+            bool shouldNotify =
+                featureEnabled &&
+                notificationsEnabled &&
+                ReadyTransitionDetector.ShouldNotify(
+                    hasBaseline,
+                    wasReady,
+                    isReady,
+                    modeUnchanged);
+            return new ReadyNotificationPollResult(
+                shouldNotify,
+                modeUnchanged || hasBaseline,
+                modeUnchanged ? isReady : wasReady);
+        }
+    }
 }

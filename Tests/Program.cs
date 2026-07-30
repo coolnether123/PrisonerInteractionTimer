@@ -20,6 +20,9 @@ namespace PrisonerInteractionTimer.Tests
             TestReadyTransition();
             TestModeChangeDoesNotNotify();
             TestUnchangedNotReadyDoesNotNotify();
+            TestMasterDisableSuppressesNotification();
+            TestNotificationDisableSuppressesNotification();
+            TestDisabledPollAdvancesBaseline();
             TestInteractionCountsAboveLimitRemainBlocked();
 
             Console.WriteLine(
@@ -200,6 +203,63 @@ namespace PrisonerInteractionTimer.Tests
                     false,
                     true),
                 "A prisoner that remains blocked must not notify.");
+        }
+
+        private static void TestMasterDisableSuppressesNotification()
+        {
+            ReadyNotificationPollResult result =
+                ReadyNotificationPolicy.Evaluate(
+                    false,
+                    true,
+                    true,
+                    false,
+                    true,
+                    true);
+            True(
+                !result.ShouldNotify,
+                "The master feature switch must suppress ready alerts.");
+        }
+
+        private static void TestNotificationDisableSuppressesNotification()
+        {
+            ReadyNotificationPollResult result =
+                ReadyNotificationPolicy.Evaluate(
+                    true,
+                    false,
+                    true,
+                    false,
+                    true,
+                    true);
+            True(
+                !result.ShouldNotify,
+                "The notification switch must suppress ready alerts.");
+        }
+
+        private static void TestDisabledPollAdvancesBaseline()
+        {
+            ReadyNotificationPollResult disabledPoll =
+                ReadyNotificationPolicy.Evaluate(
+                    false,
+                    true,
+                    true,
+                    false,
+                    true,
+                    true);
+            True(
+                disabledPoll.HasBaseline && disabledPoll.WasReady,
+                "A disabled poll must still record the current ready state.");
+
+            ReadyNotificationPollResult reenabledPoll =
+                ReadyNotificationPolicy.Evaluate(
+                    true,
+                    true,
+                    disabledPoll.HasBaseline,
+                    disabledPoll.WasReady,
+                    true,
+                    true);
+            True(
+                !reenabledPoll.ShouldNotify,
+                "Re-enabling must not emit a stale catch-up alert.");
         }
 
         private static void TestInteractionCountsAboveLimitRemainBlocked()

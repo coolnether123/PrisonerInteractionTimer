@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PrisonerInteractionTimer.Domain;
 using PrisonerInteractionTimer.Readiness;
+using PrisonerInteractionTimer.Settings;
 using RimWorld;
 using Verse;
 
@@ -63,9 +64,8 @@ namespace PrisonerInteractionTimer.Notifications
                 return;
             }
 
-            bool notificationsEnabled =
-                Bootstrap.PrisonerInteractionTimerMod.Settings?
-                    .NotificationsEnabled == true;
+            PrisonerInteractionTimerSettings settings =
+                Bootstrap.PrisonerInteractionTimerMod.Settings;
             for (int index = watches.Count - 1;
                 index >= 0;
                 index--)
@@ -87,12 +87,15 @@ namespace PrisonerInteractionTimer.Notifications
                     watch.ModeSignature;
                 bool isReady = sameMode &&
                     snapshot.IsEligibleNow;
-                if (notificationsEnabled &&
-                    ReadyTransitionDetector.ShouldNotify(
+                ReadyNotificationPollResult poll =
+                    ReadyNotificationPolicy.Evaluate(
+                        settings?.FeatureEnabled == true,
+                        settings?.NotificationsEnabled == true,
                         watch.HasBaseline,
                         watch.WasReady,
                         isReady,
-                        sameMode))
+                        sameMode);
+                if (poll.ShouldNotify)
                 {
                     Messages.Message(
                         "PIT_ReadyMessage".Translate(
@@ -103,11 +106,8 @@ namespace PrisonerInteractionTimer.Notifications
                         false);
                 }
 
-                if (sameMode)
-                {
-                    watch.HasBaseline = true;
-                    watch.WasReady = isReady;
-                }
+                watch.HasBaseline = poll.HasBaseline;
+                watch.WasReady = poll.WasReady;
             }
         }
 

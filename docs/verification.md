@@ -9,12 +9,14 @@ end-to-end completion.
 dotnet run --project A:\Dev\RimWorld\Mods\PrisonerInteractionTimer\Tests\Mod.Tests.csproj -c Release
 ```
 
-Result on 2026-07-30: `PASS: 20 prisoner timer contract assertions`.
+Result on 2026-07-30: `PASS: 24 prisoner timer contract assertions`.
 
 Covered contracts include the strict vanilla cooldown boundary, fresh-pawn
 readiness, local-day cap, max-of-gates behavior, overflow safety, display
 formats, notification edge detection, mode-change suppression, deterministic
-blocked-state suppression, and interaction counts beyond the daily cap.
+blocked-state suppression, master/notification switch suppression, disabled
+baseline advancement, stale-alert prevention on re-enable, and interaction
+counts beyond the daily cap.
 Both XML files parse successfully, and all 51 `PIT_*` source translation keys
 have exactly one corresponding English keyed entry with no missing or unused
 keys.
@@ -28,21 +30,19 @@ The successful build output records:
 - Spine SHA-256:
   `2441959E82AA5CAC5C96E7456213B21D1FB67881E314F85F54373A4DB8C0E2AA`
 - final packaged mod DLL SHA-256:
-  `2194B86487A8C46D895146B603CC828E09019DA8C13EA053B30A63B28D11C866`
+  `1C6E59BBCAE689827221D04054A6C534CB3E05F19DB2764B47424FB4D0AEAD08`
 
 The final build resolves Spine commit
 `650fb95835d187777fae314e1de361b8991b33ee`. Package validation returned
-`RWT-BUILD-PACKAGE-VALID` for the single 31,232-byte assembly.
+`RWT-BUILD-PACKAGE-VALID` for the single 31,744-byte assembly.
 
-## Runtime candidate
+## Initial runtime candidate
 
-The same-source candidate DLL
+The initial feature candidate DLL
 `D020BA2F33CD27ED96228DCBA820768E2D9BFB1F679804B81294EAEE208EC232`
 loaded through the isolated agentic harness with Core, Harmony, RimWorld
 Agent, Spine, and Prisoner Interaction Timer in RimWorld
-`1.6.4871 rev574`. The final package was rebuilt afterward against Spine's
-corrected ABI-compatible assembly; no Prisoner Interaction Timer source
-changed between the runtime candidate and final build.
+`1.6.4871 rev574`.
 
 Session `PrisonerInteractionTimer-abbf441c3fa248b89083c8167fb15de1`
 reported exactly three owned methods and three postfixes, with zero prefixes,
@@ -64,6 +64,29 @@ Evidence:
   `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-abbf441c3fa248b89083c8167fb15de1\ipc\captures\pit-removal-safe-notification-20260730-205055-654.png`
 - preserved exact-candidate evidence:
   `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-abbf441c3fa248b89083c8167fb15de1\evidence`
+
+## Exact-final master-switch regression
+
+Session `PrisonerInteractionTimer-a5d19fe002ef495e8f2b2c1a6f2cf8f5`
+loaded the final `1C6E59...` assembly. A watched Recruit prisoner was first
+polled while not ready. With notifications enabled, the harness then disabled
+the master `FeatureEnabled` setting, forced the prisoner to vanilla-ready, and
+advanced 250 paused ticks across a notification poll. The prisoner remained
+`ScheduledForInteraction=True`, and no message appeared.
+
+The harness re-enabled the master setting and advanced another 250 paused
+ticks across the next poll. The Prisoner tab rendered `Ready now`, the
+per-mode watch remained checked, and no stale catch-up message appeared.
+Harmony reported exactly three owned postfixes; error-filtered logs contained
+no matches. The harness released the process normally
+(`ExitCode=0`, `ForcedTermination=false`).
+
+Evidence:
+
+- disabled transition:
+  `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-a5d19fe002ef495e8f2b2c1a6f2cf8f5\ipc\captures\pit-master-disabled-ready-paused-20260730-213945-012.png`
+- re-enabled ready state with no catch-up alert:
+  `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-a5d19fe002ef495e8f2b2c1a6f2cf8f5\ipc\captures\pit-master-reenabled-ready-no-catchup-paused-20260730-214004-670.png`
 
 ## Removal and add-back compatibility
 

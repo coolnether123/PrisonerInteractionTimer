@@ -25,6 +25,9 @@ definitions, so their absence does not create a hard expansion dependency.
 - A constant-time notification hook runs with vanilla game components;
   readiness polling occurs every 250 game ticks and only evaluates explicitly
   watched prisoner/mode pairs.
+- Notification messages require both the master feature switch and the
+  notification switch. Disabled polling advances the readiness baseline so
+  re-enabling cannot emit an old transition.
 - No per-frame or per-tick work runs when the UI is closed and no notification
   watches exist, apart from the notification hook's constant-time interval
   guard.
