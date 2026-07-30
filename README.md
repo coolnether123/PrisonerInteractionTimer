@@ -14,6 +14,15 @@ Runtime dependencies:
 The standalone Spine mod supplies the shared settings UI and guarded Harmony
 patch application. Better Work Tab is not a runtime or build dependency.
 
+## Installation
+
+Spine does not yet have a public Workshop or download URL, so this verified
+build is distributed in the local collection at
+`A:\Dev\RimWorld\Releases\1.6\2026-07-30-program-final`. Copy both
+`PrisonerInteractionTimer` and `Spine` into RimWorld's `Mods` directory, then
+enable Harmony, Spine, and Prisoner Interaction Timer in that order. No other
+gameplay mod in the collection is required.
+
 ## Build and test
 
 ```powershell
