@@ -1,6 +1,5 @@
 using PrisonerInteractionTimer.Notifications;
 using PrisonerInteractionTimer.Readiness;
-using Spine.UI.Layout;
 using UnityEngine;
 using Verse;
 
@@ -15,12 +14,12 @@ namespace PrisonerInteractionTimer.UI
         private static readonly Color BlockedColor =
             new Color(0.82f, 0.82f, 0.82f);
 
-        public static void Draw(Listing_Standard listing, Pawn prisoner)
+        public static float Draw(Listing_Standard listing, Pawn prisoner)
         {
             if (Bootstrap.PrisonerInteractionTimerMod.Settings?
                 .FeatureEnabled != true)
             {
-                return;
+                return 0f;
             }
 
             PrisonerReadinessSnapshot snapshot =
@@ -31,67 +30,86 @@ namespace PrisonerInteractionTimer.UI
                 snapshot.UsesTimer &&
                 !string.IsNullOrEmpty(snapshot.ModeSignature);
 
-            listing.Gap(8f);
-            Rect outer = listing.GetRect(showWatch ? 112f : 84f)
-                .Rounded();
-            Widgets.DrawMenuSection(outer);
-            Rect content = SpineRectLayout.Pad(outer, 10f, 8f);
+            string headerText = "PIT_TimerHeader".Translate();
+            string statusText = ReadinessTextResolver.Status(snapshot);
+            string modeText = "PIT_ModeLine".Translate(snapshot.ModeLabel);
+            string nextText = "PIT_NextLine".Translate(
+                ReadinessTextResolver.NextEligible(snapshot));
+            string watchText = "PIT_NotifyThisMode".Translate();
 
-            Rect header = SpineRectLayout.WithHeight(
-                content,
-                24f,
-                out Rect remainder,
-                2f);
-            var columns = SpineRectLayout.Horizontal(
-                header,
-                6f,
-                SpineLayoutTrack.Flex(),
-                SpineLayoutTrack.Fixed(92f));
+            GameFont previousFont = Text.Font;
+            TextAnchor previousAnchor = Text.Anchor;
+            bool previousWordWrap = Text.WordWrap;
+            Color previousColor = GUI.color;
 
             Text.Font = GameFont.Small;
-            Text.Anchor = TextAnchor.MiddleLeft;
-            Widgets.Label(columns[0], "PIT_TimerHeader".Translate());
+            Text.WordWrap = true;
+            float contentWidth = Mathf.Max(
+                1f,
+                listing.ColumnWidth -
+                2f * PrisonerTimerPanelLayoutCalculator.HorizontalPadding);
+            PrisonerTimerPanelLayout layout =
+                PrisonerTimerPanelLayoutCalculator.Measure(
+                    listing.ColumnWidth,
+                    Text.CalcSize(headerText).x,
+                    Text.CalcSize(statusText).x,
+                    Text.CalcHeight(headerText, contentWidth),
+                    Text.CalcHeight(statusText, contentWidth),
+                    Text.CalcHeight(modeText, contentWidth),
+                    Text.CalcHeight(nextText, contentWidth),
+                    Text.CalcHeight(watchText, contentWidth),
+                    showWatch);
 
-            Color previousColor = GUI.color;
-            GUI.color = StatusColor(snapshot);
-            Text.Anchor = TextAnchor.MiddleRight;
-            Widgets.Label(
-                columns[1],
-                ReadinessTextResolver.Status(snapshot));
+            Rect outer = new Rect(
+                0f,
+                listing.CurHeight +
+                    PrisonerTimerPanelLayoutCalculator.PanelGap,
+                listing.ColumnWidth,
+                layout.OuterHeight).Rounded();
+            Widgets.DrawMenuSection(outer);
+            Rect content = outer.ContractedBy(
+                PrisonerTimerPanelLayoutCalculator.HorizontalPadding,
+                PrisonerTimerPanelLayoutCalculator.TopPadding);
+            content.yMax = outer.yMax -
+                PrisonerTimerPanelLayoutCalculator.BottomPadding;
+
+            float cursorY = content.y;
+            DrawHeader(
+                content,
+                ref cursorY,
+                layout,
+                headerText,
+                statusText,
+                snapshot);
             GUI.color = previousColor;
-            Text.Anchor = TextAnchor.UpperLeft;
+            cursorY += PrisonerTimerPanelLayoutCalculator.RowGap;
 
-            Rect mode = SpineRectLayout.WithHeight(
-                remainder,
-                22f,
-                out remainder);
-            Widgets.Label(
-                mode,
-                "PIT_ModeLine".Translate(snapshot.ModeLabel));
-
-            Rect next = SpineRectLayout.WithHeight(
-                remainder,
-                22f,
-                out remainder);
-            Widgets.Label(
-                next,
-                "PIT_NextLine".Translate(
-                    ReadinessTextResolver.NextEligible(snapshot)));
+            DrawTextRow(
+                content,
+                ref cursorY,
+                layout.ModeRowHeight,
+                modeText);
+            cursorY += PrisonerTimerPanelLayoutCalculator.RowGap;
+            DrawTextRow(
+                content,
+                ref cursorY,
+                layout.NextRowHeight,
+                nextText);
 
             if (showWatch)
             {
+                cursorY += PrisonerTimerPanelLayoutCalculator.RowGap;
                 bool watched =
                     PrisonerNotificationService.IsWatched(
                         prisoner,
                         snapshot.ModeSignature);
-                Rect watch = SpineRectLayout.WithHeight(
-                    remainder,
-                    24f,
-                    out _);
-                Widgets.CheckboxLabeled(
-                    watch,
-                    "PIT_NotifyThisMode".Translate(),
-                    ref watched);
+                Rect watch = new Rect(
+                    content.x,
+                    cursorY,
+                    content.width,
+                    layout.WatchRowHeight);
+                Text.Anchor = TextAnchor.UpperLeft;
+                Widgets.CheckboxLabeled(watch, watchText, ref watched);
                 if (watched !=
                     PrisonerNotificationService.IsWatched(
                         prisoner,
@@ -109,6 +127,62 @@ namespace PrisonerInteractionTimer.UI
                 outer,
                 ReadinessTextResolver.Tooltip(snapshot));
             Widgets.DrawHighlightIfMouseover(outer);
+
+            GUI.color = previousColor;
+            Text.Anchor = previousAnchor;
+            Text.WordWrap = previousWordWrap;
+            Text.Font = previousFont;
+            return PrisonerTimerPanelLayoutCalculator.AdditionalTabHeight(
+                layout);
+        }
+
+        private static void DrawHeader(
+            Rect content,
+            ref float cursorY,
+            PrisonerTimerPanelLayout layout,
+            string headerText,
+            string statusText,
+            PrisonerReadinessSnapshot snapshot)
+        {
+            Rect headerLabel = new Rect(
+                content.x,
+                cursorY,
+                layout.HeaderLabelWidth,
+                layout.HeaderLabelRowHeight);
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(headerLabel, headerText);
+
+            if (layout.StackHeader)
+            {
+                cursorY += layout.HeaderLabelRowHeight +
+                    PrisonerTimerPanelLayoutCalculator.RowGap;
+            }
+
+            Rect status = new Rect(
+                layout.StackHeader ? content.x : headerLabel.xMax +
+                    PrisonerTimerPanelLayoutCalculator.HeaderGap,
+                cursorY,
+                layout.StatusWidth,
+                layout.StatusRowHeight);
+            GUI.color = StatusColor(snapshot);
+            Text.Anchor = TextAnchor.MiddleRight;
+            Widgets.Label(status, statusText);
+            cursorY += layout.StatusRowHeight;
+        }
+
+        private static void DrawTextRow(
+            Rect content,
+            ref float cursorY,
+            float rowHeight,
+            string text)
+        {
+            Text.Anchor = TextAnchor.UpperLeft;
+            Widgets.Label(new Rect(
+                content.x,
+                cursorY,
+                content.width,
+                rowHeight), text);
+            cursorY += rowHeight;
         }
 
         private static Color StatusColor(

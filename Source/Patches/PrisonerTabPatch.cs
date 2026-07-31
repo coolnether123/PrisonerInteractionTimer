@@ -4,6 +4,7 @@ using HarmonyLib;
 using PrisonerInteractionTimer.UI;
 using RimWorld;
 using Spine.Harmony;
+using UnityEngine;
 using Verse;
 
 namespace PrisonerInteractionTimer.Patches
@@ -44,6 +45,9 @@ namespace PrisonerInteractionTimer.Patches
     [HarmonyPatch]
     internal static class PrisonerTabPatch
     {
+        private static readonly FieldInfo TabSizeField =
+            AccessTools.Field(typeof(ITab_Pawn_Visitor), "size");
+
         private static MethodBase TargetMethod()
         {
             return AccessTools.DeclaredMethod(
@@ -57,16 +61,26 @@ namespace PrisonerInteractionTimer.Patches
         }
 
         [HarmonyPostfix]
-        private static void Postfix(Listing_Standard listing)
+        private static void Postfix(
+            ITab_Pawn_Visitor __instance,
+            Listing_Standard listing)
         {
             Pawn prisoner =
                 Find.Selector.SingleSelectedThing as Pawn;
             if (prisoner != null &&
                 prisoner.IsPrisonerOfColony)
             {
-                PrisonerTabTimerDrawer.Draw(
+                float additionalHeight =
+                    PrisonerTabTimerDrawer.Draw(
                     listing,
                     prisoner);
+                if (additionalHeight > 0f)
+                {
+                    Vector2 tabSize = (Vector2)TabSizeField.GetValue(
+                        __instance);
+                    tabSize.y += additionalHeight;
+                    TabSizeField.SetValue(__instance, tabSize);
+                }
             }
         }
     }

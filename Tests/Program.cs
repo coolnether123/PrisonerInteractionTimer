@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PrisonerInteractionTimer.Domain;
+using PrisonerInteractionTimer.UI;
 
 namespace PrisonerInteractionTimer.Tests
 {
@@ -24,6 +25,9 @@ namespace PrisonerInteractionTimer.Tests
             TestNotificationDisableSuppressesNotification();
             TestDisabledPollAdvancesBaseline();
             TestInteractionCountsAboveLimitRemainBlocked();
+            TestTimerPanelAddsSpaceBelowVanillaContent();
+            TestTimerPanelReservesDescenderAndBottomPadding();
+            TestTimerPanelStacksHeaderWhenNarrow();
 
             Console.WriteLine(
                 "PASS: " + assertions +
@@ -278,6 +282,84 @@ namespace PrisonerInteractionTimer.Tests
             True(
                 !result.IsReady,
                 "A count beyond the cap must not be treated as ready.");
+        }
+
+        private static void TestTimerPanelAddsSpaceBelowVanillaContent()
+        {
+            PrisonerTimerPanelLayout layout =
+                PrisonerTimerPanelLayoutCalculator.Measure(
+                    260f,
+                    90f,
+                    60f,
+                    18f,
+                    18f,
+                    18f,
+                    18f,
+                    18f,
+                    false);
+            Equal(
+                PrisonerTimerPanelLayoutCalculator.PanelGap +
+                    layout.OuterHeight,
+                PrisonerTimerPanelLayoutCalculator.AdditionalTabHeight(
+                    layout),
+                "The timer panel must extend the tab below vanilla content instead of consuming its listing rows.");
+        }
+
+        private static void TestTimerPanelReservesDescenderAndBottomPadding()
+        {
+            PrisonerTimerPanelLayout layout =
+                PrisonerTimerPanelLayoutCalculator.Measure(
+                    260f,
+                    90f,
+                    60f,
+                    18f,
+                    18f,
+                    26f,
+                    26f,
+                    18f,
+                    true);
+            True(
+                layout.ModeRowHeight >= 30f &&
+                layout.NextRowHeight >= 30f,
+                "Measured multi-line text must retain bottom space for descenders.");
+            True(
+                layout.OuterHeight >=
+                    PrisonerTimerPanelLayoutCalculator.TopPadding +
+                    layout.HeaderHeight +
+                    PrisonerTimerPanelLayoutCalculator.RowGap +
+                    layout.ModeRowHeight +
+                    PrisonerTimerPanelLayoutCalculator.RowGap +
+                    layout.NextRowHeight +
+                    PrisonerTimerPanelLayoutCalculator.RowGap +
+                    layout.WatchRowHeight +
+                    PrisonerTimerPanelLayoutCalculator.BottomPadding,
+                "The measured panel must retain bottom padding after its final row.");
+        }
+
+        private static void TestTimerPanelStacksHeaderWhenNarrow()
+        {
+            PrisonerTimerPanelLayout layout =
+                PrisonerTimerPanelLayoutCalculator.Measure(
+                    130f,
+                    70f,
+                    50f,
+                    18f,
+                    18f,
+                    18f,
+                    18f,
+                    18f,
+                    false);
+            True(
+                layout.StackHeader,
+                "A narrow prisoner tab must stack header text rather than clip either header column.");
+            Equal(
+                layout.ContentWidth,
+                layout.HeaderLabelWidth,
+                "A stacked header label must use the measured content width.");
+            Equal(
+                layout.ContentWidth,
+                layout.StatusWidth,
+                "A stacked status must use the measured content width.");
         }
 
         private static void True(bool condition, string message)

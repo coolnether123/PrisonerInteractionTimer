@@ -9,5 +9,7 @@
   <ItemGroup>
     <Compile Include="..\Source\Domain\InteractionTimer.cs"
              Link="InteractionTimer.cs" />
+    <Compile Include="..\Source\UI\PrisonerTimerPanelLayout.cs"
+             Link="PrisonerTimerPanelLayout.cs" />
   </ItemGroup>
 </Project>
