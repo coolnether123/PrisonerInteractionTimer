@@ -1,5 +1,6 @@
 using PrisonerInteractionTimer.Patches;
 using PrisonerInteractionTimer.Settings;
+using Spine.Api;
 using Spine.UI.SettingsFramework;
 using UnityEngine;
 using Verse;
@@ -16,6 +17,12 @@ namespace PrisonerInteractionTimer.Bootstrap
         public PrisonerInteractionTimerMod(ModContentPack content)
             : base(content)
         {
+            SpineApi.Runtime.Require(new SpineRequirement(
+                "CoolNether123.PrisonerInteractionTimer",
+                new SemanticVersion(1, 0, 0),
+                SpineCapability.Settings |
+                SpineCapability.HarmonyPatching));
+
             settings = GetSettings<PrisonerInteractionTimerSettings>();
             Settings = settings;
             settingsDrawer = new SettingsListDrawer(
