@@ -14,6 +14,10 @@ Runtime dependencies:
 The standalone Spine mod supplies the shared settings UI and guarded Harmony
 patch application. Better Work Tab is not a runtime or build dependency.
 
+Alt-click the timer heading, time value, blocker lines, or watch control to
+open and highlight the corresponding setting. The Alt-click is consumed before
+the watch checkbox can change.
+
 ## Installation
 
 Spine does not yet have a public Workshop or download URL, so this verified
