@@ -1,5 +1,9 @@
 # Verification record
 
+The 2026-07-31 compatibility checkpoint is recorded in
+`compatibility-investigation-2026-07-31.md` with its compact companion matrix
+in `compatibility-matrix-2026-07-31.md`.
+
 This file records commands and evidence. A build alone is not treated as
 end-to-end completion.
 
