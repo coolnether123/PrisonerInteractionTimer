@@ -1,5 +1,6 @@
 using PrisonerInteractionTimer.Notifications;
 using PrisonerInteractionTimer.Readiness;
+using Spine.UI.ContextualSettings;
 using UnityEngine;
 using Verse;
 
@@ -66,6 +67,23 @@ namespace PrisonerInteractionTimer.UI
                     PrisonerTimerPanelLayoutCalculator.PanelGap,
                 listing.ColumnWidth,
                 layout.OuterHeight).Rounded();
+            float additionalHeight =
+                PrisonerTimerPanelLayoutCalculator.AdditionalTabHeight(
+                    layout);
+            if (Bootstrap.PrisonerInteractionTimerMod.ContextualSettings?.Bind(
+                outer,
+                ContextualSettingsTarget.Group("display.header"),
+                ContextualSettingsBindingOptions.WithTooltip(
+                    ReadinessTextResolver.Tooltip(snapshot),
+                    priority: 0)) == true)
+            {
+                GUI.color = previousColor;
+                Text.Anchor = previousAnchor;
+                Text.WordWrap = previousWordWrap;
+                Text.Font = previousFont;
+                return additionalHeight;
+            }
+
             Widgets.DrawMenuSection(outer);
             Rect content = outer.ContractedBy(
                 PrisonerTimerPanelLayoutCalculator.HorizontalPadding,
@@ -88,13 +106,15 @@ namespace PrisonerInteractionTimer.UI
                 content,
                 ref cursorY,
                 layout.ModeRowHeight,
-                modeText);
+                modeText,
+                "display.reasons");
             cursorY += PrisonerTimerPanelLayoutCalculator.RowGap;
             DrawTextRow(
                 content,
                 ref cursorY,
                 layout.NextRowHeight,
-                nextText);
+                nextText,
+                "display.reasons");
 
             if (showWatch)
             {
@@ -109,6 +129,12 @@ namespace PrisonerInteractionTimer.UI
                     content.width,
                     layout.WatchRowHeight);
                 Text.Anchor = TextAnchor.UpperLeft;
+                Bootstrap.PrisonerInteractionTimerMod.ContextualSettings?.Bind(
+                    watch,
+                    ContextualSettingsTarget.Exact(
+                        "notifications.enabled",
+                        "notifications.header"),
+                    new ContextualSettingsBindingOptions(priority: 20));
                 Widgets.CheckboxLabeled(watch, watchText, ref watched);
                 if (watched !=
                     PrisonerNotificationService.IsWatched(
@@ -123,17 +149,13 @@ namespace PrisonerInteractionTimer.UI
                 }
             }
 
-            TooltipHandler.TipRegion(
-                outer,
-                ReadinessTextResolver.Tooltip(snapshot));
             Widgets.DrawHighlightIfMouseover(outer);
 
             GUI.color = previousColor;
             Text.Anchor = previousAnchor;
             Text.WordWrap = previousWordWrap;
             Text.Font = previousFont;
-            return PrisonerTimerPanelLayoutCalculator.AdditionalTabHeight(
-                layout);
+            return additionalHeight;
         }
 
         private static void DrawHeader(
@@ -150,6 +172,12 @@ namespace PrisonerInteractionTimer.UI
                 layout.HeaderLabelWidth,
                 layout.HeaderLabelRowHeight);
             Text.Anchor = TextAnchor.MiddleLeft;
+            Bootstrap.PrisonerInteractionTimerMod.ContextualSettings?.Bind(
+                headerLabel,
+                ContextualSettingsTarget.Exact(
+                    "display.enabled",
+                    "display.header"),
+                new ContextualSettingsBindingOptions(priority: 10));
             Widgets.Label(headerLabel, headerText);
 
             if (layout.StackHeader)
@@ -166,6 +194,12 @@ namespace PrisonerInteractionTimer.UI
                 layout.StatusRowHeight);
             GUI.color = StatusColor(snapshot);
             Text.Anchor = TextAnchor.MiddleRight;
+            Bootstrap.PrisonerInteractionTimerMod.ContextualSettings?.Bind(
+                status,
+                ContextualSettingsTarget.Exact(
+                    "display.format",
+                    "display.header"),
+                new ContextualSettingsBindingOptions(priority: 20));
             Widgets.Label(status, statusText);
             cursorY += layout.StatusRowHeight;
         }
@@ -174,14 +208,22 @@ namespace PrisonerInteractionTimer.UI
             Rect content,
             ref float cursorY,
             float rowHeight,
-            string text)
+            string text,
+            string settingId)
         {
             Text.Anchor = TextAnchor.UpperLeft;
-            Widgets.Label(new Rect(
+            Rect row = new Rect(
                 content.x,
                 cursorY,
                 content.width,
-                rowHeight), text);
+                rowHeight);
+            Bootstrap.PrisonerInteractionTimerMod.ContextualSettings?.Bind(
+                row,
+                ContextualSettingsTarget.Exact(
+                    settingId,
+                    "display.header"),
+                new ContextualSettingsBindingOptions(priority: 10));
+            Widgets.Label(row, text);
             cursorY += rowHeight;
         }
 

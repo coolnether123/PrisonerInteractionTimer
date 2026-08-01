@@ -1,4 +1,5 @@
 using PrisonerInteractionTimer.Readiness;
+using Spine.UI.ContextualSettings;
 using UnityEngine;
 using Verse;
 
@@ -30,9 +31,14 @@ namespace PrisonerInteractionTimer.UI
                 10f);
             Widgets.DrawBoxSolid(marker, color);
             Widgets.DrawBox(marker);
-            TooltipHandler.TipRegion(
+            Bootstrap.PrisonerInteractionTimerMod.ContextualSettings?.Bind(
                 rect,
-                ReadinessTextResolver.Tooltip(snapshot));
+                ContextualSettingsTarget.Exact(
+                    "display.enabled",
+                    "display.header"),
+                ContextualSettingsBindingOptions.WithTooltip(
+                    ReadinessTextResolver.Tooltip(snapshot),
+                    priority: 10));
         }
     }
 }
