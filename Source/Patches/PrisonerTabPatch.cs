@@ -4,7 +4,6 @@ using HarmonyLib;
 using PrisonerInteractionTimer.UI;
 using RimWorld;
 using Spine.Harmony;
-using UnityEngine;
 using Verse;
 
 namespace PrisonerInteractionTimer.Patches
@@ -45,9 +44,6 @@ namespace PrisonerInteractionTimer.Patches
     [HarmonyPatch]
     internal static class PrisonerTabPatch
     {
-        private static readonly FieldInfo TabSizeField =
-            AccessTools.Field(typeof(ITab_Pawn_Visitor), "size");
-
         private static MethodBase TargetMethod()
         {
             return AccessTools.DeclaredMethod(
@@ -76,10 +72,12 @@ namespace PrisonerInteractionTimer.Patches
                     prisoner);
                 if (additionalHeight > 0f)
                 {
-                    Vector2 tabSize = (Vector2)TabSizeField.GetValue(
-                        __instance);
-                    tabSize.y += additionalHeight;
-                    TabSizeField.SetValue(__instance, tabSize);
+                    // FillTab calculates the tab's final height from
+                    // Listing.CurHeight after this method returns. Reserve
+                    // the panel's space in the completed listing so vanilla
+                    // sizes the tab around it on this and future frames.
+                    // This runs only after vanilla has drawn its policy rows.
+                    listing.Gap(additionalHeight);
                 }
             }
         }

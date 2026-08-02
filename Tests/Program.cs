@@ -28,6 +28,8 @@ namespace PrisonerInteractionTimer.Tests
             TestTimerPanelAddsSpaceBelowVanillaContent();
             TestTimerPanelReservesDescenderAndBottomPadding();
             TestTimerPanelStacksHeaderWhenNarrow();
+            TestTimerPanelFitsAfterDefaultPrisonerLayout();
+            TestTimerPanelFitsAfterFullDlcPrisonerLayout();
 
             Console.WriteLine(
                 "PASS: " + assertions +
@@ -360,6 +362,59 @@ namespace PrisonerInteractionTimer.Tests
                 layout.ContentWidth,
                 layout.StatusWidth,
                 "A stacked status must use the measured content width.");
+        }
+
+        private static void TestTimerPanelFitsAfterDefaultPrisonerLayout()
+        {
+            AssertPanelReservationFitsCompletedTab(
+                184f,
+                false,
+                "A default prisoner layout must reserve the timer panel " +
+                "below vanilla's completed rows.");
+        }
+
+        private static void TestTimerPanelFitsAfterFullDlcPrisonerLayout()
+        {
+            AssertPanelReservationFitsCompletedTab(
+                452f,
+                true,
+                "A full-DLC prisoner layout must reserve the timer panel " +
+                "below vanilla's completed rows instead of drawing below " +
+                "the tab.");
+        }
+
+        private static void AssertPanelReservationFitsCompletedTab(
+            float vanillaListingHeight,
+            bool showWatch,
+            string message)
+        {
+            PrisonerTimerPanelLayout layout =
+                PrisonerTimerPanelLayoutCalculator.Measure(
+                    260f,
+                    90f,
+                    60f,
+                    18f,
+                    18f,
+                    18f,
+                    18f,
+                    18f,
+                    showWatch);
+            float panelBottom = vanillaListingHeight +
+                PrisonerTimerPanelLayoutCalculator.PanelGap +
+                layout.OuterHeight;
+            float completedListingHeight = vanillaListingHeight +
+                PrisonerTimerPanelLayoutCalculator.AdditionalTabHeight(
+                    layout);
+            float completedTabHeight = completedListingHeight + 20f;
+
+            Equal(
+                panelBottom,
+                completedListingHeight,
+                message);
+            True(
+                completedTabHeight > panelBottom,
+                "Vanilla's final tab padding must remain after the timer " +
+                "panel in every supported prisoner layout.");
         }
 
         private static void True(bool condition, string message)

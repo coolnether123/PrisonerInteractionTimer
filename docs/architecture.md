@@ -35,6 +35,18 @@ produce a countdown:
 The UI samples this state every draw, so game-speed changes and interaction
 mode changes require no wall-clock timers or cache invalidation.
 
+## Prisoner-tab sizing
+
+`ITab_Pawn_Visitor.FillTab` calculates its final height from
+`Listing_Standard.CurHeight` after `DoPrisonerTab` returns. The timer panel is
+drawn after vanilla's prisoner-policy rows, then its measured panel height is
+reserved with `Listing.Gap`. That reservation occurs only after vanilla has
+finished its rows: it does not consume, resize, or reposition a policy row.
+It does make the panel part of the completed listing, so RimWorld sizes the
+inspect tab around the panel instead of drawing it below the tab's clipping
+area. The panel continues to measure wrapping, descender space, narrow header
+stacking, and its optional watch row from the current tab width.
+
 ## Removal-safe notification persistence
 
 Notification watches are not stored as a custom `GameComponent`. RimWorld

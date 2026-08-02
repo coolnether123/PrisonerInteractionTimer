@@ -118,3 +118,45 @@ Evidence:
 The only runtime warning observed was shared metadata validation noting that
 the local Spine dependency has no public download or Workshop URL. This mod
 does not fabricate one.
+
+## Prisoner-tab layout regression correction
+
+The 2026-08-02 compatibility investigation found that the timer panel and
+watch control could be drawn below the visible Prisoner tab at 1920x1080,
+UI scale 1. The issue reproduced in a minimal Core, Harmony, Spine, and
+Prisoner Interaction Timer lane as well as a full-DLC prisoner stack.
+
+RimWorld's `ITab_Pawn_Visitor.FillTab` calculates the final tab height from
+`Listing_Standard.CurHeight` after `DoPrisonerTab` returns. The previous
+postfix changed the tab's `size` field directly, so vanilla immediately
+overwrote that change and the independently drawn panel had no reserved
+space. The fix reserves the panel's already measured height with
+`Listing.Gap` only after vanilla has finished drawing its prisoner rows.
+Vanilla therefore includes the panel in its final tab height without changing
+any existing control's position or behavior.
+
+Focused automated verification on 2026-08-02:
+
+```powershell
+dotnet run --project A:\Dev\RimWorld\Mods\PrisonerInteractionTimer\Tests\Mod.Tests.csproj -c Release
+```
+
+Result: `PASS: 34 prisoner timer contract assertions`. The additional
+default-layout and full-DLC-height contracts verify that the measured panel,
+including its optional watch row, is fully reserved below completed vanilla
+rows and retains RimWorld's final bottom padding.
+
+The package was rebuilt through RimWorld Tooling and validated with
+`Test-RwtPackage` as `RWT-BUILD-PACKAGE-VALID`. The resulting 1.6 DLL is
+35,840 bytes with SHA-256
+`B2B91E7EDADC35821A9AA085CF992B550B5E03CBDE48A417687DF6588C65BF9D`.
+Build evidence is under
+`Engineering/artifacts/pit-layout-fix-20260802`.
+
+The first post-fix live lane attempted the default prisoner fixture, but the
+current harness queued fixture commands while the game remained in its Entry
+lifecycle and force-stopped the lane after its command timeout. Its log shows
+no Prisoner Interaction Timer exception or patch failure; this is recorded as
+a harness command/lifecycle blocker, not a feature pass. A full in-game
+capture must be rerun after the harness repair before declaring this visual
+regression fully reverified.
