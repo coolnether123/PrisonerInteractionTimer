@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using PrisonerInteractionTimer.Domain;
 using PrisonerInteractionTimer.Readiness;
 using PrisonerInteractionTimer.Settings;
@@ -18,9 +17,7 @@ namespace PrisonerInteractionTimer.Notifications
         public static bool IsWatched(Pawn prisoner, string modeSignature)
         {
             EnsureGame(Current.Game);
-            return watches.Any(watch =>
-                watch.Prisoner == prisoner &&
-                watch.ModeSignature == modeSignature);
+            return FindWatchIndex(prisoner, modeSignature) >= 0;
         }
 
         public static void SetWatched(
@@ -30,10 +27,10 @@ namespace PrisonerInteractionTimer.Notifications
             bool baselineReady)
         {
             EnsureGame(Current.Game);
-            PrisonerNotificationWatch existing =
-                watches.FirstOrDefault(item =>
-                    item.Prisoner == prisoner &&
-                    item.ModeSignature == modeSignature);
+            int existingIndex = FindWatchIndex(prisoner, modeSignature);
+            PrisonerNotificationWatch existing = existingIndex < 0
+                ? null
+                : watches[existingIndex];
             if (!watched)
             {
                 if (existing != null)
@@ -138,6 +135,23 @@ namespace PrisonerInteractionTimer.Notifications
 
             owningGame = game;
             watches = new List<PrisonerNotificationWatch>();
+        }
+
+        private static int FindWatchIndex(
+            Pawn prisoner,
+            string modeSignature)
+        {
+            for (int index = 0; index < watches.Count; index++)
+            {
+                PrisonerNotificationWatch watch = watches[index];
+                if (watch?.Prisoner == prisoner &&
+                    watch.ModeSignature == modeSignature)
+                {
+                    return index;
+                }
+            }
+
+            return -1;
         }
     }
 }

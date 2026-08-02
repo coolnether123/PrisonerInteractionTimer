@@ -10,7 +10,7 @@ end-to-end completion.
 ## Automated contracts
 
 ```powershell
-dotnet run --project A:\Dev\RimWorld\Mods\PrisonerInteractionTimer\Tests\Mod.Tests.csproj -c Release
+dotnet run --project <repo-root>\Tests\Mod.Tests.csproj -c Release
 ```
 
 Result on 2026-07-30: `PASS: 24 prisoner timer contract assertions`.
@@ -65,9 +65,9 @@ or output-log messages. The process exited normally through the harness
 Evidence:
 
 - notification and persisted-watch capture:
-  `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-abbf441c3fa248b89083c8167fb15de1\ipc\captures\pit-removal-safe-notification-20260730-205055-654.png`
+  `<harness-evidence-root>\PrisonerInteractionTimer-abbf441c3fa248b89083c8167fb15de1\ipc\captures\pit-removal-safe-notification-20260730-205055-654.png`
 - preserved exact-candidate evidence:
-  `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-abbf441c3fa248b89083c8167fb15de1\evidence`
+  `<harness-evidence-root>\PrisonerInteractionTimer-abbf441c3fa248b89083c8167fb15de1\evidence`
 
 ## Exact-final master-switch regression
 
@@ -88,9 +88,9 @@ no matches. The harness released the process normally
 Evidence:
 
 - disabled transition:
-  `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-a5d19fe002ef495e8f2b2c1a6f2cf8f5\ipc\captures\pit-master-disabled-ready-paused-20260730-213945-012.png`
+  `<harness-evidence-root>\PrisonerInteractionTimer-a5d19fe002ef495e8f2b2c1a6f2cf8f5\ipc\captures\pit-master-disabled-ready-paused-20260730-213945-012.png`
 - re-enabled ready state with no catch-up alert:
-  `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-a5d19fe002ef495e8f2b2c1a6f2cf8f5\ipc\captures\pit-master-reenabled-ready-no-catchup-paused-20260730-214004-670.png`
+  `<harness-evidence-root>\PrisonerInteractionTimer-a5d19fe002ef495e8f2b2c1a6f2cf8f5\ipc\captures\pit-master-reenabled-ready-no-catchup-paused-20260730-214004-670.png`
 
 ## Removal and add-back compatibility
 
@@ -111,9 +111,9 @@ normally.
 Evidence:
 
 - no-mod removal capture:
-  `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\Spine-4f553189a4bc41adb123c0e269b50a34\ipc\captures\pit-removal-safe-no-mod-20260730-205404-913.png`
+  `<harness-evidence-root>\Spine-4f553189a4bc41adb123c0e269b50a34\ipc\captures\pit-removal-safe-no-mod-20260730-205404-913.png`
 - add-back timer capture:
-  `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\PrisonerInteractionTimer-84bf135fd2974669ade2ed41d03c0da4\ipc\captures\pit-existing-save-add-back-visible-20260730-205916-147.png`
+  `<harness-evidence-root>\PrisonerInteractionTimer-84bf135fd2974669ade2ed41d03c0da4\ipc\captures\pit-existing-save-add-back-visible-20260730-205916-147.png`
 
 The only runtime warning observed was shared metadata validation noting that
 the local Spine dependency has no public download or Workshop URL. This mod
@@ -138,7 +138,7 @@ any existing control's position or behavior.
 Focused automated verification on 2026-08-02:
 
 ```powershell
-dotnet run --project A:\Dev\RimWorld\Mods\PrisonerInteractionTimer\Tests\Mod.Tests.csproj -c Release
+dotnet run --project <repo-root>\Tests\Mod.Tests.csproj -c Release
 ```
 
 Result: `PASS: 34 prisoner timer contract assertions`. The additional
@@ -154,9 +154,31 @@ Build evidence is under
 `Engineering/artifacts/pit-layout-fix-20260802`.
 
 The first post-fix live lane attempted the default prisoner fixture, but the
-current harness queued fixture commands while the game remained in its Entry
-lifecycle and force-stopped the lane after its command timeout. Its log shows
-no Prisoner Interaction Timer exception or patch failure; this is recorded as
-a harness command/lifecycle blocker, not a feature pass. A full in-game
-capture must be rerun after the harness repair before declaring this visual
-regression fully reverified.
+harness queued fixture commands while the game remained in its Entry lifecycle
+and force-stopped the lane after its command timeout. That rejected attempt is
+retained as historical diagnosis and is superseded by the RC proof below.
+
+## Release-candidate revalidation — 2026-08-02
+
+The final centralized build completed with zero warnings and zero errors.
+`Test-RwtPackage` returned `RWT-BUILD-PACKAGE-VALID`. The production folder
+contains one 33,280-byte `PrisonerInteractionTimer.dll`, SHA-256
+`2C0CA2470C0E9D1063E403FF23ED371D2ADFB6AEE7209B64ACDD3E6726739401`.
+
+The current full-stack lane
+`coolnether-suite-1d0030fad02c44449ce4fbf96ac7908a` reached Playing with all
+eight gameplay mods, Spine, Better Work Tab, Ideology, Biotech, SOS2, and
+Vehicle Framework. The harness created a secure Recruit prisoner with a
+5,000-tick cooldown and opened the real full-DLC Prisoner tab. The timer panel
+was wholly visible below the Hemogen farm row, its `Interaction readiness`,
+`Mode`, and `Next eligible` text retained bottom descenders, and no vanilla or
+DLC row was covered.
+
+Capture:
+`<harness-evidence-root>\coolnether-suite-1d0030fad02c44449ce4fbf96ac7908a\ipc\captures\old-four-rc-pit-layout-20260802-225514-273.png`
+
+Capture SHA-256:
+`2E60C500BF93F90B4A26F7E306673B3933A89F46E654E3C592E732B236B58702`.
+
+The final pre-shutdown scan found no matching Player.log error. The harness
+stopped normally with exit code 0 and no forced termination.

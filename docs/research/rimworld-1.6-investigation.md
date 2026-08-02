@@ -3,9 +3,9 @@
 Investigated against:
 
 - executable:
-  `H:\Games\RimWorld1-6-4871Win64\RimWorldWin64.exe`
+  `<rimworld-install>\RimWorldWin64.exe`
 - managed assembly:
-  `H:\Games\RimWorld1-6-4871Win64\RimWorldWin64_Data\Managed\Assembly-CSharp.dll`
+  `<rimworld-install>\RimWorldWin64_Data\Managed\Assembly-CSharp.dll`
 - assembly version: `1.6.9676.17238`
 
 No RimWorld or dependency source was copied into this repository.

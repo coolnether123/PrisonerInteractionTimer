@@ -2,39 +2,35 @@ using System;
 using System.Collections.Generic;
 using PrisonerInteractionTimer.Domain;
 using PrisonerInteractionTimer.UI;
+using static RimWorld.ModTestSupport.Test;
 
 namespace PrisonerInteractionTimer.Tests
 {
     internal static class Program
     {
-        private static int assertions;
-
         private static int Main()
         {
-            TestStrictVanillaCooldownBoundary();
-            TestCooldownAlreadyReady();
-            TestDailyLimitExtendsCountdown();
-            TestCooldownCanOutlastDailyReset();
-            TestNegativeDayResetInputIsClamped();
-            TestLargeTickArithmeticDoesNotOverflow();
-            TestTimeFormats();
-            TestReadyTransition();
-            TestModeChangeDoesNotNotify();
-            TestUnchangedNotReadyDoesNotNotify();
-            TestMasterDisableSuppressesNotification();
-            TestNotificationDisableSuppressesNotification();
-            TestDisabledPollAdvancesBaseline();
-            TestInteractionCountsAboveLimitRemainBlocked();
-            TestTimerPanelAddsSpaceBelowVanillaContent();
-            TestTimerPanelReservesDescenderAndBottomPadding();
-            TestTimerPanelStacksHeaderWhenNarrow();
-            TestTimerPanelFitsAfterDefaultPrisonerLayout();
-            TestTimerPanelFitsAfterFullDlcPrisonerLayout();
-
-            Console.WriteLine(
-                "PASS: " + assertions +
-                " prisoner timer contract assertions");
-            return 0;
+            Start("Prisoner Interaction Timer contracts");
+            Run("strict vanilla cooldown boundary", TestStrictVanillaCooldownBoundary);
+            Run("cooldown already ready", TestCooldownAlreadyReady);
+            Run("daily limit extends countdown", TestDailyLimitExtendsCountdown);
+            Run("cooldown can outlast daily reset", TestCooldownCanOutlastDailyReset);
+            Run("negative reset input clamps", TestNegativeDayResetInputIsClamped);
+            Run("large tick arithmetic", TestLargeTickArithmeticDoesNotOverflow);
+            Run("time formats", TestTimeFormats);
+            Run("ready transition", TestReadyTransition);
+            Run("mode change does not notify", TestModeChangeDoesNotNotify);
+            Run("unchanged wait does not notify", TestUnchangedNotReadyDoesNotNotify);
+            Run("master disable suppresses notification", TestMasterDisableSuppressesNotification);
+            Run("notification disable suppresses notification", TestNotificationDisableSuppressesNotification);
+            Run("disabled poll advances baseline", TestDisabledPollAdvancesBaseline);
+            Run("interaction counts above limit", TestInteractionCountsAboveLimitRemainBlocked);
+            Run("timer panel adds space", TestTimerPanelAddsSpaceBelowVanillaContent);
+            Run("timer panel reserves descenders", TestTimerPanelReservesDescenderAndBottomPadding);
+            Run("timer panel stacks when narrow", TestTimerPanelStacksHeaderWhenNarrow);
+            Run("timer panel fits default layout", TestTimerPanelFitsAfterDefaultPrisonerLayout);
+            Run("timer panel fits full DLC layout", TestTimerPanelFitsAfterFullDlcPrisonerLayout);
+            return Finish();
         }
 
         private static void TestStrictVanillaCooldownBoundary()
@@ -417,27 +413,5 @@ namespace PrisonerInteractionTimer.Tests
                 "panel in every supported prisoner layout.");
         }
 
-        private static void True(bool condition, string message)
-        {
-            assertions++;
-            if (!condition)
-            {
-                throw new InvalidOperationException(message);
-            }
-        }
-
-        private static void Equal<T>(
-            T expected,
-            T actual,
-            string message)
-        {
-            assertions++;
-            if (!EqualityComparer<T>.Default.Equals(expected, actual))
-            {
-                throw new InvalidOperationException(
-                    message + " Expected " + expected +
-                    ", got " + actual + ".");
-            }
-        }
     }
 }

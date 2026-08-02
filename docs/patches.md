@@ -12,7 +12,7 @@ Safety:
 
 - target is resolved by declaring type, exact method name, and exact parameter
   types;
-- applied through `Spine.Harmony.HarmonyUtil.PatchType`;
+- applied through the shared consumer installer's `PatchTypeOnce`;
 - exactly one patched method is required, otherwise a controlled error is
   logged;
 - the postfix does not change arguments, return values, policy state, jobs, or
@@ -37,5 +37,5 @@ constant-time interval check on ordinary ticks and evaluates only explicitly
 watched prisoner/mode pairs every 250 ticks.
 
 Both lifecycle targets are resolved by exact declaring type and method name.
-The notification installer requires exactly two applied methods and logs a
-controlled error otherwise.
+The same installer and Harmony owner are used for the tab and notification
+patch classes; each named install has target-specific failure diagnostics.

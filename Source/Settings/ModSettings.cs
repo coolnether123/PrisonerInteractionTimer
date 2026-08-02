@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using PrisonerInteractionTimer.Domain;
+using Spine.Api;
 using Spine.UI.SettingsFramework;
 using Verse;
 
@@ -8,7 +9,7 @@ namespace PrisonerInteractionTimer.Settings
     public sealed class PrisonerInteractionTimerSettings : ModSettings
     {
         private static readonly IReadOnlyList<SettingDefinition>
-            SettingDefinitions = BuildDefinitions();
+            DefinitionList = BuildDefinitions();
 
         public bool FeatureEnabled = true;
         public TimeDisplayFormat DisplayFormat =
@@ -17,11 +18,11 @@ namespace PrisonerInteractionTimer.Settings
         public bool NotificationsEnabled;
 
         public static IReadOnlyList<SettingDefinition> Definitions =>
-            SettingDefinitions;
+            DefinitionList;
 
         public override void ExposeData()
         {
-            SettingsScribe.ScribeAll(this, SettingDefinitions);
+            SpineApi.Settings.Scribe(this, DefinitionList);
             base.ExposeData();
         }
 
@@ -29,90 +30,56 @@ namespace PrisonerInteractionTimer.Settings
         {
             return new[]
             {
-                new SettingDefinition
-                {
-                    Id = "display.header",
-                    Type = SettingType.Header,
-                    Label = "Timer display",
-                    LabelKey = "PIT_SettingsDisplayHeader",
-                    SortOrder = 0,
-                    ShowInSimpleView = true
-                },
-                new SettingDefinition
-                {
-                    Id = "display.enabled",
-                    FieldName = nameof(FeatureEnabled),
-                    ScribeKey = "featureEnabled",
-                    Type = SettingType.Bool,
-                    Label = "Show prisoner interaction timers",
-                    LabelKey = "PIT_SettingsEnabledLabel",
-                    Tooltip = "Adds vanilla readiness timing and blockers " +
-                        "to the selected prisoner's Prisoner tab.",
-                    TooltipKey = "PIT_SettingsEnabledTooltip",
-                    DefaultValue = true,
-                    SortOrder = 10,
-                    ShowInSimpleView = true,
-                    ControlsChildVisibility = true
-                },
-                new SettingDefinition
-                {
-                    Id = "display.format",
-                    ParentId = "display.enabled",
-                    FieldName = nameof(DisplayFormat),
-                    ScribeKey = "displayFormat",
-                    Type = SettingType.Enum,
-                    EnumType = typeof(TimeDisplayFormat),
-                    EnumLabelProvider = FormatLabel,
-                    EnumDescriptionProvider = FormatDescription,
-                    Label = "Countdown format",
-                    LabelKey = "PIT_SettingsFormatLabel",
-                    Tooltip = "Choose how remaining game time is shown.",
-                    TooltipKey = "PIT_SettingsFormatTooltip",
-                    DefaultValue = TimeDisplayFormat.HumanReadable,
-                    SortOrder = 20,
-                    ShowInSimpleView = true
-                },
-                new SettingDefinition
-                {
-                    Id = "display.reasons",
-                    ParentId = "display.enabled",
-                    FieldName = nameof(ShowDetailedReasons),
-                    ScribeKey = "showDetailedReasons",
-                    Type = SettingType.Bool,
-                    Label = "Show detailed blocker explanations",
-                    LabelKey = "PIT_SettingsReasonsLabel",
-                    Tooltip = "Lists all currently known vanilla blockers " +
-                        "in the timer tooltip.",
-                    TooltipKey = "PIT_SettingsReasonsTooltip",
-                    DefaultValue = true,
-                    SortOrder = 30,
-                    ShowInSimpleView = true
-                },
-                new SettingDefinition
-                {
-                    Id = "notifications.header",
-                    Type = SettingType.Header,
-                    Label = "Notifications",
-                    LabelKey = "PIT_SettingsNotificationsHeader",
-                    SortOrder = 100,
-                    ShowInSimpleView = true
-                },
-                new SettingDefinition
-                {
-                    Id = "notifications.enabled",
-                    FieldName = nameof(NotificationsEnabled),
-                    ScribeKey = "notificationsEnabled",
-                    Type = SettingType.Bool,
-                    Label = "Enable per-prisoner ready notifications",
-                    LabelKey = "PIT_SettingsNotificationsLabel",
-                    Tooltip = "When enabled, the Prisoner tab offers an " +
-                        "opt-in alert for the prisoner's current interaction " +
-                        "mode. Alerts fire once per not-ready to ready transition.",
-                    TooltipKey = "PIT_SettingsNotificationsTooltip",
-                    DefaultValue = false,
-                    SortOrder = 110,
-                    ShowInSimpleView = true
-                }
+                SettingDefinitions.Header(
+                    "display.header",
+                    "Timer display",
+                    "PIT_SettingsDisplayHeader"),
+                SettingDefinitions.Toggle(
+                    "display.enabled",
+                    nameof(FeatureEnabled),
+                    "Show prisoner interaction timers",
+                    "PIT_SettingsEnabledLabel",
+                    "Adds vanilla readiness timing and blockers to the " +
+                        "selected prisoner's Prisoner tab.",
+                    "PIT_SettingsEnabledTooltip",
+                    controlsChildren: true,
+                    scribeKey: "featureEnabled"),
+                SettingDefinitions.Enum(
+                    "display.format",
+                    nameof(DisplayFormat),
+                    typeof(TimeDisplayFormat),
+                    "Countdown format",
+                    "PIT_SettingsFormatLabel",
+                    "Choose how remaining game time is shown.",
+                    "PIT_SettingsFormatTooltip",
+                    parentId: "display.enabled",
+                    scribeKey: "displayFormat",
+                    labelProvider: FormatLabel,
+                    descriptionProvider: FormatDescription),
+                SettingDefinitions.Toggle(
+                    "display.reasons",
+                    nameof(ShowDetailedReasons),
+                    "Show detailed blocker explanations",
+                    "PIT_SettingsReasonsLabel",
+                    "Lists all currently known vanilla blockers in the " +
+                        "timer tooltip.",
+                    "PIT_SettingsReasonsTooltip",
+                    parentId: "display.enabled",
+                    scribeKey: "showDetailedReasons"),
+                SettingDefinitions.Header(
+                    "notifications.header",
+                    "Notifications",
+                    "PIT_SettingsNotificationsHeader"),
+                SettingDefinitions.Toggle(
+                    "notifications.enabled",
+                    nameof(NotificationsEnabled),
+                    "Enable per-prisoner ready notifications",
+                    "PIT_SettingsNotificationsLabel",
+                    "When enabled, the Prisoner tab offers an opt-in alert " +
+                        "for the prisoner's current interaction mode. Alerts " +
+                        "fire once per not-ready to ready transition.",
+                    "PIT_SettingsNotificationsTooltip",
+                    scribeKey: "notificationsEnabled")
             };
         }
 

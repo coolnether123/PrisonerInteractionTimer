@@ -1,8 +1,6 @@
-using System;
 using System.Reflection;
 using HarmonyLib;
 using PrisonerInteractionTimer.Notifications;
-using Spine.Harmony;
 using Verse;
 
 namespace PrisonerInteractionTimer.Patches
@@ -11,40 +9,14 @@ namespace PrisonerInteractionTimer.Patches
     {
         public static void Install()
         {
-            var harmony = new Harmony(
-                "CoolNether123.PrisonerInteractionTimer");
-            var options = new HarmonyUtil.PatchOptions
-            {
-                OnResult = (target, result) =>
-                {
-                    if (result.StartsWith(
-                        "error:",
-                        StringComparison.Ordinal))
-                    {
-                        Log.Error(
-                            "[Prisoner Interaction Timer] Notification " +
-                            "hook failure: " + result);
-                    }
-                }
-            };
-            var persistencePatches = HarmonyUtil.PatchType(
-                harmony,
+            PatchInstaller.Instance.PatchTypeOnce(
+                "notification persistence",
                 typeof(NotificationPersistencePatch),
-                options);
-            var tickPatches = HarmonyUtil.PatchType(
-                harmony,
+                expectedPatchCount: 1);
+            PatchInstaller.Instance.PatchTypeOnce(
+                "notification polling",
                 typeof(NotificationTickPatch),
-                options);
-            int patchCount =
-                persistencePatches.Count +
-                tickPatches.Count;
-            if (patchCount != 2)
-            {
-                Log.Error(
-                    "[Prisoner Interaction Timer] Expected two " +
-                    "notification hooks, but applied " +
-                    patchCount + ".");
-            }
+                expectedPatchCount: 1);
         }
     }
 

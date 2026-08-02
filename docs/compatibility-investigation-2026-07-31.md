@@ -8,7 +8,7 @@ Target DLL SHA-256: `1C6E59BBCAE689827221D04054A6C534CB3E05F19DB2764B47424FB4D0A
 
 This checkpoint records only results obtained through the canonical isolated
 H-drive harness. The executable was
-`H:\Games\RimWorld1-6-4871Win64\RimWorldWin64.exe`; the runtime log identifies
+`<rimworld-install>\RimWorldWin64.exe`; the runtime log identifies
 RimWorld `1.6.4871 rev574`, while the harness manifest names build
 `1.6.4871 rev573`. Core was the only active Ludeon package. Results from a
 non-canonical D-drive attempt were discarded and support no conclusion.
@@ -51,11 +51,11 @@ echoing its own search term, not game exceptions.
 
 Evidence:
 
-- Recruit countdown: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\ipc\captures\pit-core-recruit-cooldown-20260801-004758-278.png`
-- Settings: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\ipc\captures\pit-core-settings-20260801-004804-461.png`
-- Watched-state UI: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\ipc\captures\pit-core-ticks-notify-20260801-004907-934.png`
-- Reloaded watch: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\ipc\captures\pit-core-watch-reloaded-20260801-005649-443.png`
-- Manifest and log: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\lane.json` and `logs\Player.log`
+- Recruit countdown: `<harness-evidence-root>\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\ipc\captures\pit-core-recruit-cooldown-20260801-004758-278.png`
+- Settings: `<harness-evidence-root>\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\ipc\captures\pit-core-settings-20260801-004804-461.png`
+- Watched-state UI: `<harness-evidence-root>\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\ipc\captures\pit-core-ticks-notify-20260801-004907-934.png`
+- Reloaded watch: `<harness-evidence-root>\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\ipc\captures\pit-core-watch-reloaded-20260801-005649-443.png`
+- Manifest and log: `<harness-evidence-root>\compat-prisoner-timer-e84ecace7c00404285e77e156a68c6df\lane.json` and `logs\Player.log`
 - Baseline save SHA-256: `3A342313B2973E716D1148BA8856A483429DDB050481A6A194586DF71BAA2E0C`
 - 26-watch save SHA-256: `C00DFC4803684EB9C143D9027CAEBD0692CE2B62A9A8D330351449C213736CEA`
 
@@ -71,8 +71,8 @@ observed. The resave SHA-256 is
 
 Evidence:
 
-- Screenshot: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-prisoner-timer-removal-adf453399a204e02985e89c16955ac82\ipc\captures\pit-removal-no-mod-20260801-010117-618.png`
-- Manifest and log: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-prisoner-timer-removal-adf453399a204e02985e89c16955ac82\lane.json` and `logs\Player.log`
+- Screenshot: `<harness-evidence-root>\compat-prisoner-timer-removal-adf453399a204e02985e89c16955ac82\ipc\captures\pit-removal-no-mod-20260801-010117-618.png`
+- Manifest and log: `<harness-evidence-root>\compat-prisoner-timer-removal-adf453399a204e02985e89c16955ac82\lane.json` and `logs\Player.log`
 
 This proves removal safety for the copied Core-only state exercised here. It
 does not supersede another mod author's removal instructions for that mod's
@@ -87,7 +87,7 @@ a prefix and postfix on `ITab_Pawn_Visitor.FillTab`. No exception was observed,
 but the short run did not complete a useful prisoner UI scenario. This is an
 assembly/startup baseline only, not a behavior compatibility result.
 
-Evidence: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-pit-cpi-alone-c2c747fc22c34b528bd1bae0e29243f1\lane.json`
+Evidence: `<harness-evidence-root>\compat-pit-cpi-alone-c2c747fc22c34b528bd1bae0e29243f1\lane.json`
 and its `logs\Player.log`.
 
 ### Target then Custom Prisoner Interactions — compatible on tested Core modes
@@ -108,9 +108,9 @@ so the classification is limited to Core and the exact order above.
 
 Evidence:
 
-- Untimed Release: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-pit-cpi-a-da396246ba194a2ab7c7d9e385c58568\ipc\captures\pit-cpi-release-untimed-20260801-010421-903.png`
-- Timed Recruit: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-pit-cpi-a-da396246ba194a2ab7c7d9e385c58568\ipc\captures\pit-cpi-recruit-timed-20260801-010426-704.png`
-- Manifest and log: `C:\Users\PrecisionX\AppData\Local\Temp\RimWorldAgentTasks\1.6\compat-pit-cpi-a-da396246ba194a2ab7c7d9e385c58568\lane.json` and `logs\Player.log`
+- Untimed Release: `<harness-evidence-root>\compat-pit-cpi-a-da396246ba194a2ab7c7d9e385c58568\ipc\captures\pit-cpi-release-untimed-20260801-010421-903.png`
+- Timed Recruit: `<harness-evidence-root>\compat-pit-cpi-a-da396246ba194a2ab7c7d9e385c58568\ipc\captures\pit-cpi-recruit-timed-20260801-010426-704.png`
+- Manifest and log: `<harness-evidence-root>\compat-pit-cpi-a-da396246ba194a2ab7c7d9e385c58568\lane.json` and `logs\Player.log`
 
 ## Performance checkpoint — inconclusive
 

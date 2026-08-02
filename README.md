@@ -21,8 +21,7 @@ the watch checkbox can change.
 ## Installation
 
 Spine does not yet have a public Workshop or download URL, so this verified
-build is distributed in the local collection at
-`A:\Dev\RimWorld\Releases\1.6\2026-07-30-program-final`. Copy both
+build is distributed through the locally produced release collection. Copy both
 `PrisonerInteractionTimer` and `Spine` into RimWorld's `Mods` directory, then
 enable Harmony, Spine, and Prisoner Interaction Timer in that order. No other
 gameplay mod in the collection is required.
@@ -30,15 +29,17 @@ gameplay mod in the collection is required.
 ## Build and test
 
 ```powershell
-dotnet run --project A:\Dev\RimWorld\Mods\PrisonerInteractionTimer\Tests\Mod.Tests.csproj -c Release
+dotnet run --project .\Tests\Mod.Tests.csproj -c Release
 ```
 
 Use the centralized RimWorld tooling for release builds:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass -Force
-$repo = 'A:\Dev\RimWorld\Mods\PrisonerInteractionTimer'
-& 'A:\Dev\RimWorld\Worktrees\RimWorld-Tooling\phase-a\tools\Invoke-RimWorldBuild.ps1' `
+$repo = $PWD.Path
+$toolingRoot = $env:RIMWORLD_TOOLING_ROOT
+if (-not $toolingRoot) { throw 'Set RIMWORLD_TOOLING_ROOT first.' }
+& "$toolingRoot\tools\Invoke-RimWorldBuild.ps1" `
   -Project "$repo\Source\Mod.csproj" `
   -Configuration Release `
   -Version 1.6 `

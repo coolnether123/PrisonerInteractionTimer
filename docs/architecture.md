@@ -17,8 +17,8 @@ The implementation is separated into:
 - `UI`: the appended Prisoner-tab panel and opt-in compact overview renderer.
 - `Notifications`: per-prisoner/per-mode subscriptions held by a game-scoped
   service and scribed as an optional vanilla `Game` data node.
-- `Patches`: three narrow postfixes with direct installers, applied through
-  Spine's guarded Harmony helper.
+- `Patches`: three narrow postfixes installed through one Spine installer and
+  one consumer Harmony owner.
 - `Settings`: Spine settings definitions, automatic scribing, and drawer.
 
 ## Vanilla authority
@@ -114,7 +114,9 @@ consumer. Harmony calls `TargetMethod` by convention rather than by a visible
 source reference.
 
 Empty scaffold registries for patch and compatibility modules were removed.
-The direct installers now cover one UI patch and two notification lifecycle
+One shared installer now covers the UI patch and two notification lifecycle
 hooks, while the real compatibility surface remains the interaction-mode
-registry. If a second warden-query consumer is added later, reassess the local
-boundary then rather than centralizing it speculatively now.
+registry. A custom `GameComponent` remains intentionally rejected here: it
+would write a mod type into the save component list and weaken the verified
+removal-from-save behavior. If a second warden-query consumer is added later,
+reassess the local boundary then rather than centralizing it speculatively.
