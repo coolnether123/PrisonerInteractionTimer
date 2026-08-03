@@ -182,3 +182,10 @@ Capture SHA-256:
 
 The final pre-shutdown scan found no matching Player.log error. The harness
 stopped normally with exit code 0 and no forced termination.
+## Final release-candidate gate — 2026-08-03
+
+Passed 19 contracts (34 assertions), clean build, and package checks. A live
+secure-prisoner fixture with Ideology and Biotech displayed the timer and next
+eligible time without clipping or overlap. All-suite, UI/content,
+performance, and Multiplayer save/reload runs produced no exception owned by
+Prisoner Interaction Timer.
