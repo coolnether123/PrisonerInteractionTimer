@@ -4,3 +4,7 @@
 *.suo
 *.user
 Engineering/artifacts/
+
+# Local developer fixtures. Never part of the release payload, and their
+# built assemblies go stale the moment the shipping mod moves on.
+Developer/
