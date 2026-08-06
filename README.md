@@ -20,8 +20,7 @@ the watch checkbox can change.
 
 ## Installation
 
-Prisoner Interaction Timer needs Harmony and Spine. Harmony is on the Steam
-Workshop; SpineLib is available on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3778463813); repository builds are at [coolnether123/Spine](https://github.com/coolnether123/Spine).
+Prisoner Interaction Timer needs Harmony and [SpineLib](https://steamcommunity.com/sharedfiles/filedetails/?id=3778463813). Harmony and SpineLib are available on the Steam Workshop; repository builds are at [coolnether123/Spine](https://github.com/coolnether123/Spine).
 
 Copy both `PrisonerInteractionTimer` and `Spine` into RimWorld's `Mods`
 directory, then enable Harmony, SpineLib, and Prisoner Interaction Timer in that
