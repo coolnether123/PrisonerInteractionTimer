@@ -24,7 +24,13 @@
     <li>brrainz.harmony</li>
     <li>CoolNether123.Spine</li>
   </loadAfter>
-  <description>Shows the selected prisoner's live vanilla interaction cooldown, next eligible time, active interaction modes, and current blockers such as sleep, incapacity, or a missing eligible warden.
+  <description>Shows when a prisoner can next be worked on, and what is stopping you.
 
-The timer uses RimWorld game ticks and never changes cooldowns, assigns wardens, or performs interactions. Optional per-prisoner and per-mode notifications fire once when a watched prisoner becomes ready.</description>
+- Live interaction cooldown and next eligible time
+- Which interaction modes are currently active
+- What is blocking one: sleep, incapacity, or no eligible warden
+- Optional per-prisoner and per-mode notifications when one becomes ready
+- Reads state only; never changes cooldowns or assigns wardens
+
+Requires Harmony and Spine.</description>
 </ModMetaData>
