@@ -6,6 +6,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Settings
 {
+    /// <summary>
+    /// Stores the player choices that control timer presentation and opt-in
+    /// readiness alerts through Spine's shared settings framework.
+    /// </summary>
     public sealed class PrisonerInteractionTimerSettings : ModSettings
     {
         private static readonly IReadOnlyList<SettingDefinition>

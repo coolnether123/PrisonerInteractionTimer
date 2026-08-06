@@ -6,6 +6,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.UI
 {
+    /// <summary>
+    /// Draws the selected prisoner's read-only readiness panel while leaving
+    /// vanilla policy rows and tab sizing under vanilla control.
+    /// </summary>
     internal static class PrisonerTabTimerDrawer
     {
         private static readonly Color ReadyColor =
@@ -129,6 +133,8 @@ namespace PrisonerInteractionTimer.UI
                     content.width,
                     layout.WatchRowHeight);
                 Text.Anchor = TextAnchor.UpperLeft;
+                // Binding must see the click before the checkbox can mutate
+                // watch state on an Alt-click intended for settings.
                 Bootstrap.PrisonerInteractionTimerMod.ContextualSettings?.Bind(
                     watch,
                     ContextualSettingsTarget.Exact(

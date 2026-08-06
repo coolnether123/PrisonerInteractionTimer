@@ -7,6 +7,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Notifications
 {
+    /// <summary>
+    /// Owns game-scoped subscriptions and bounded polling so alerts remain
+    /// removal-safe and cannot leak between saves.
+    /// </summary>
     internal static class PrisonerNotificationService
     {
         private const int CheckIntervalTicks = 250;
@@ -92,6 +96,8 @@ namespace PrisonerInteractionTimer.Notifications
                         watch.WasReady,
                         isReady,
                         sameMode);
+                // Baselines advance even while alerts are disabled; otherwise
+                // re-enabling them would emit an old transition.
                 if (poll.ShouldNotify)
                 {
                     Messages.Message(

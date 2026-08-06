@@ -2,6 +2,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Notifications
 {
+    /// <summary>
+    /// Persists one prisoner-and-mode subscription plus its transition
+    /// baseline without adding a mod-defined game component to saves.
+    /// </summary>
     public sealed class PrisonerNotificationWatch : IExposable
     {
         public Pawn Prisoner;

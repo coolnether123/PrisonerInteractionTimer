@@ -6,6 +6,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Patches
 {
+    /// <summary>
+    /// Registers the narrow prisoner-tab integration through the mod's shared
+    /// Harmony owner.
+    /// </summary>
     internal static class PrisonerTabPatchInstaller
     {
         public static void Install()
@@ -18,6 +22,10 @@ namespace PrisonerInteractionTimer.Patches
     }
 
     [HarmonyPatch]
+    /// <summary>
+    /// Appends the timer only after vanilla finishes its policy rows so those
+    /// controls keep their layout and behavior.
+    /// </summary>
     internal static class PrisonerTabPatch
     {
         private static MethodBase TargetMethod()

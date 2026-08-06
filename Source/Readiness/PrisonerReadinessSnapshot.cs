@@ -7,6 +7,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Readiness
 {
+    /// <summary>
+    /// Freezes the timing, modes, and blockers from one evaluation so every UI
+    /// surface presents a coherent readiness state.
+    /// </summary>
     public sealed class PrisonerReadinessSnapshot
     {
         public PrisonerReadinessSnapshot(

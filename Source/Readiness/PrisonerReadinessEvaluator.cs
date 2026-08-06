@@ -8,6 +8,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Readiness
 {
+    /// <summary>
+    /// Samples vanilla prisoner state and resolves explainable blockers
+    /// without creating jobs or changing interaction eligibility.
+    /// </summary>
     public static class PrisonerReadinessEvaluator
     {
         public static PrisonerReadinessSnapshot Evaluate(Pawn prisoner)
@@ -101,6 +105,8 @@ namespace PrisonerInteractionTimer.Readiness
                 !blockers.Contains(
                     ReadinessBlockReason.Insecure);
 
+            // Path and reservation checks are the expensive part, so they are
+            // useful only after every cheap vanilla gate has passed.
             string signature = string.Join(
                 "|",
                 modes.Select(mode => mode.defName));

@@ -5,6 +5,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Patches
 {
+    /// <summary>
+    /// Installs the two lifecycle hooks needed for removal-safe subscription
+    /// persistence and bounded polling.
+    /// </summary>
     internal static class NotificationHookInstaller
     {
         public static void Install()
@@ -21,6 +25,10 @@ namespace PrisonerInteractionTimer.Patches
     }
 
     [HarmonyPatch]
+    /// <summary>
+    /// Stores subscriptions inside vanilla game data so saves do not retain a
+    /// missing component type when the mod is removed.
+    /// </summary>
     internal static class NotificationPersistencePatch
     {
         private static MethodBase TargetMethod()
@@ -38,6 +46,10 @@ namespace PrisonerInteractionTimer.Patches
     }
 
     [HarmonyPatch]
+    /// <summary>
+    /// Borrows vanilla's game-component tick to poll without introducing a
+    /// save-visible component of this mod's own.
+    /// </summary>
     internal static class NotificationTickPatch
     {
         private static MethodBase TargetMethod()

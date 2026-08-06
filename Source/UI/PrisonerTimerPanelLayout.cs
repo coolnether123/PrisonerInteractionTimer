@@ -2,6 +2,10 @@ using System;
 
 namespace PrisonerInteractionTimer.UI
 {
+    /// <summary>
+    /// Carries measured row geometry so drawing and vanilla height reservation
+    /// use the same layout decision.
+    /// </summary>
     internal readonly struct PrisonerTimerPanelLayout
     {
         public PrisonerTimerPanelLayout(
@@ -53,6 +57,10 @@ namespace PrisonerInteractionTimer.UI
         public float OuterHeight { get; }
     }
 
+    /// <summary>
+    /// Measures localized, wrapping panel text so narrow tabs and descenders
+    /// remain visible without repositioning vanilla rows.
+    /// </summary>
     internal static class PrisonerTimerPanelLayoutCalculator
     {
         internal const float PanelGap = 8f;

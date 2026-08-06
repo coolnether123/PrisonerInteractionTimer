@@ -7,6 +7,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.UI
 {
+    /// <summary>
+    /// Converts shared readiness state into localized status, countdown, and
+    /// explanation text for all presentation surfaces.
+    /// </summary>
     internal static class ReadinessTextResolver
     {
         public static string Status(PrisonerReadinessSnapshot snapshot)

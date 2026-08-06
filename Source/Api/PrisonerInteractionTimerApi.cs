@@ -6,6 +6,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Api
 {
+    /// <summary>
+    /// Gives other mods a stable way to declare timed modes and reuse the
+    /// readiness model without depending on this mod's UI internals.
+    /// </summary>
     public static class PrisonerInteractionTimerApi
     {
         public static void RegisterTimedMode(string defName)

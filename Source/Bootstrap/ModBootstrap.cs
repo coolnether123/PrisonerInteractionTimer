@@ -6,6 +6,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.Bootstrap
 {
+    /// <summary>
+    /// Connects the mod to Spine so settings and guarded patches share one
+    /// lifecycle owner.
+    /// </summary>
     public sealed class PrisonerInteractionTimerMod :
         SpineMod<PrisonerInteractionTimerSettings>
     {

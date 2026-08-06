@@ -5,6 +5,10 @@ using Verse;
 
 namespace PrisonerInteractionTimer.UI
 {
+    /// <summary>
+    /// Supplies an opt-in compact readiness marker for tables owned by other
+    /// mods, avoiding ownership of a replacement prisoner overview.
+    /// </summary>
     internal static class PrisonerOverviewIndicator
     {
         public static void Draw(Rect rect, Pawn prisoner)

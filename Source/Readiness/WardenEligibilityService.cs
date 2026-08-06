@@ -9,10 +9,18 @@ using Verse.AI;
 
 namespace PrisonerInteractionTimer.Readiness
 {
+    /// <summary>
+    /// Approximates vanilla warden availability with a short-lived cache so UI
+    /// draws do not create jobs or repeatedly run pathfinding.
+    /// </summary>
     internal static class WardenEligibilityService
     {
         private const int CacheDurationTicks = 120;
 
+        /// <summary>
+        /// Distinguishes general warden availability from mode-specific
+        /// requirements so the UI can explain the useful blocker.
+        /// </summary>
         internal readonly struct Result
         {
             public Result(bool hasBaseWarden, bool hasModeEligibleWarden)
@@ -26,6 +34,10 @@ namespace PrisonerInteractionTimer.Readiness
             public bool HasModeEligibleWarden { get; }
         }
 
+        /// <summary>
+        /// Retains one prisoner's bounded scan result without extending the
+        /// pawn's lifetime.
+        /// </summary>
         private sealed class CacheEntry
         {
             public bool HasValue;

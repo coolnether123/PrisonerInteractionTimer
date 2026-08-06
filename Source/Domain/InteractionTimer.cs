@@ -2,6 +2,9 @@ using System;
 
 namespace PrisonerInteractionTimer.Domain
 {
+    /// <summary>
+    /// Identifies the player-facing units supported for countdown display.
+    /// </summary>
     public enum TimeDisplayFormat
     {
         HumanReadable = 0,
@@ -9,6 +12,10 @@ namespace PrisonerInteractionTimer.Domain
         Ticks = 2
     }
 
+    /// <summary>
+    /// Classifies vanilla conditions that can keep a timed interaction from
+    /// being assigned, so UI and notifications share the same vocabulary.
+    /// </summary>
     public enum ReadinessBlockReason
     {
         None = 0,
@@ -25,6 +32,10 @@ namespace PrisonerInteractionTimer.Domain
         ModeRequirement = 11
     }
 
+    /// <summary>
+    /// Carries the vanilla clock and daily-limit state into pure cooldown
+    /// calculations without coupling them to game objects.
+    /// </summary>
     public readonly struct InteractionTimerInput
     {
         public InteractionTimerInput(
@@ -48,6 +59,10 @@ namespace PrisonerInteractionTimer.Domain
         public int TicksUntilLocalDayReset { get; }
     }
 
+    /// <summary>
+    /// Captures both timing gates so callers can explain which vanilla limit
+    /// still controls readiness.
+    /// </summary>
     public readonly struct InteractionTimerResult
     {
         public InteractionTimerResult(
@@ -73,6 +88,10 @@ namespace PrisonerInteractionTimer.Domain
         public bool IsReady => IntervalReady && DailyLimitReady;
     }
 
+    /// <summary>
+    /// Mirrors vanilla's timing boundaries for display while leaving the
+    /// authoritative eligibility decision to RimWorld.
+    /// </summary>
     public static class InteractionTimerCalculator
     {
         public const int MinimumInteractionIntervalTicks = 10000;
@@ -81,6 +100,8 @@ namespace PrisonerInteractionTimer.Domain
         public static InteractionTimerResult Calculate(
             InteractionTimerInput input)
         {
+            // Vanilla uses a strict greater-than comparison, so the boundary
+            // tick itself is still ineligible.
             long intervalEligibleTick =
                 (long)input.LastInteractionTick +
                 MinimumInteractionIntervalTicks +
@@ -113,6 +134,9 @@ namespace PrisonerInteractionTimer.Domain
         }
     }
 
+    /// <summary>
+    /// Produces stable countdown text for settings-selected display units.
+    /// </summary>
     public static class InteractionTimeFormatter
     {
         public const int TicksPerGameHour = 2500;
@@ -154,6 +178,10 @@ namespace PrisonerInteractionTimer.Domain
         }
     }
 
+    /// <summary>
+    /// Recognizes readiness edges so polling cannot repeat an alert for a
+    /// prisoner who remains ready.
+    /// </summary>
     public static class ReadyTransitionDetector
     {
         public static bool ShouldNotify(
@@ -166,6 +194,10 @@ namespace PrisonerInteractionTimer.Domain
         }
     }
 
+    /// <summary>
+    /// Returns both an alert decision and the baseline that must survive the
+    /// next notification poll.
+    /// </summary>
     public readonly struct ReadyNotificationPollResult
     {
         public ReadyNotificationPollResult(
@@ -185,6 +217,10 @@ namespace PrisonerInteractionTimer.Domain
         public bool WasReady { get; }
     }
 
+    /// <summary>
+    /// Advances readiness baselines independently of notification settings so
+    /// re-enabling alerts cannot replay stale transitions.
+    /// </summary>
     public static class ReadyNotificationPolicy
     {
         public static ReadyNotificationPollResult Evaluate(
