@@ -9,9 +9,9 @@ Runtime dependencies:
 
 - RimWorld 1.6
 - Harmony
-- Spine
+- SpineLib
 
-The standalone Spine mod supplies the shared settings UI and guarded Harmony
+The standalone SpineLib mod supplies the shared settings UI and guarded Harmony
 patch application. Better Work Tab is not a runtime or build dependency.
 
 Alt-click the timer heading, time value, blocker lines, or watch control to
@@ -21,11 +21,10 @@ the watch checkbox can change.
 ## Installation
 
 Prisoner Interaction Timer needs Harmony and Spine. Harmony is on the Steam
-Workshop; Spine is not published there yet, so take a build from
-[coolnether123/Spine](https://github.com/coolnether123/Spine).
+Workshop; SpineLib is available on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3778463813); repository builds are at [coolnether123/Spine](https://github.com/coolnether123/Spine).
 
 Copy both `PrisonerInteractionTimer` and `Spine` into RimWorld's `Mods`
-directory, then enable Harmony, Spine, and Prisoner Interaction Timer in that
+directory, then enable Harmony, SpineLib, and Prisoner Interaction Timer in that
 order. No other mod is required.
 
 ## Build and test
