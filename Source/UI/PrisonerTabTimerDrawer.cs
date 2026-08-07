@@ -89,9 +89,14 @@ namespace PrisonerInteractionTimer.UI
             }
 
             Widgets.DrawMenuSection(outer);
+#if PIT_LEGACY_LAYOUT
+            Rect content = outer.ContractedBy(
+                PrisonerTimerPanelLayoutCalculator.HorizontalPadding);
+#else
             Rect content = outer.ContractedBy(
                 PrisonerTimerPanelLayoutCalculator.HorizontalPadding,
                 PrisonerTimerPanelLayoutCalculator.TopPadding);
+#endif
             content.yMax = outer.yMax -
                 PrisonerTimerPanelLayoutCalculator.BottomPadding;
 

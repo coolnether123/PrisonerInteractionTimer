@@ -68,9 +68,11 @@ namespace PrisonerInteractionTimer.Compatibility
 
             return DefDatabase<PrisonerInteractionModeDef>
                 .AllDefsListForReading
-                .Where(mode =>
-                    UsesVanillaScheduledGate(mode) &&
-                    prisoner.guest.IsInteractionEnabled(mode))
+                .Where(mode => UsesVanillaScheduledGate(mode)
+#if PIT_HAS_INTERACTION_ENABLED
+                    && prisoner.guest.IsInteractionEnabled(mode)
+#endif
+                )
                 .OrderBy(mode => mode.listOrder)
                 .ThenBy(mode => mode.defName, StringComparer.Ordinal)
                 .ToList();

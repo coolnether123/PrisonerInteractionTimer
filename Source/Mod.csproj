@@ -5,9 +5,21 @@
     <AssemblyName>PrisonerInteractionTimer</AssemblyName>
     <RootNamespace>PrisonerInteractionTimer</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>..\1.6\Assemblies\</OutputPath>
+    <Configurations>1.6;1.5;1.4;1.3;1.2;1.1</Configurations>
+    <DisableImplicitConfigurationDefines>true</DisableImplicitConfigurationDefines>
+    <OutputPath>..\$(Configuration)\Assemblies\</OutputPath>
     <RwtUseHarmony>true</RwtUseHarmony>
     <RwtUseSpine>true</RwtUseSpine>
     <RwtUseUnityImGui>true</RwtUseUnityImGui>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == '1.5'">
+    <DefineConstants>PIT_HAS_IDEOLOGY;PIT_HAS_MUST_BE_AWAKE;PIT_HAS_INTERACTION_ENABLED;PIT_HAS_EXCLUSIVE_MODE;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == '1.3' Or '$(Configuration)' == '1.4'">
+    <DefineConstants>PIT_HAS_IDEOLOGY;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == '1.1' Or '$(Configuration)' == '1.2'">
+    <DefineConstants>PIT_LEGACY_LAYOUT;TRACE</DefineConstants>
   </PropertyGroup>
 </Project>

@@ -82,11 +82,13 @@ namespace PrisonerInteractionTimer.Readiness
                 blockers.Add(
                     ReadinessBlockReason.Incapacitated);
             }
+#if PIT_HAS_MUST_BE_AWAKE
             if (modes.All(mode => mode.mustBeAwake) &&
                 !prisoner.Awake())
             {
                 blockers.Add(ReadinessBlockReason.Asleep);
             }
+#endif
             if (!prisoner.guest.PrisonerIsSecure)
             {
                 blockers.Add(ReadinessBlockReason.Insecure);

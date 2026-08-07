@@ -57,8 +57,12 @@ namespace PrisonerInteractionTimer.Readiness
                             mode.LabelCap.ToString()));
                 }
 
+#if PIT_HAS_EXCLUSIVE_MODE
                 return Prisoner?.guest?.ExclusiveInteractionMode?
                     .LabelCap.ToString() ?? "None".Translate();
+#else
+                return "None".Translate();
+#endif
             }
         }
     }

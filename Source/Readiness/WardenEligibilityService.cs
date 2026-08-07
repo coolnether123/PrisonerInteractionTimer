@@ -141,12 +141,20 @@ namespace PrisonerInteractionTimer.Readiness
                 case "ReduceResistance":
                     return prisoner.guest.Resistance > 0f;
                 case "Convert":
+#if PIT_HAS_IDEOLOGY
                     return prisoner.guest.ideoForConversion != null &&
                         prisoner.Ideo != prisoner.guest.ideoForConversion &&
                         warden.Ideo == prisoner.guest.ideoForConversion;
+#else
+                    return true;
+#endif
                 case "ReduceWill":
+#if PIT_HAS_IDEOLOGY
                     return prisoner.guest.will > 0f &&
                         WillingToEnslave(warden);
+#else
+                    return true;
+#endif
                 case "Enslave":
                     return WillingToEnslave(warden);
                 default:
@@ -156,10 +164,14 @@ namespace PrisonerInteractionTimer.Readiness
 
         private static bool WillingToEnslave(Pawn warden)
         {
+#if PIT_HAS_IDEOLOGY
             return new HistoryEvent(
                 HistoryEventDefOf.EnslavedPrisoner,
                 warden.Named(HistoryEventArgsNames.Doer))
                 .DoerWillingToDo();
+#else
+            return true;
+#endif
         }
     }
 }
