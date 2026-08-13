@@ -5,6 +5,10 @@ interaction timing in the selected prisoner's Prisoner tab. It reports the
 active timed policy, the next eligible game time, and current vanilla blockers
 without changing cooldowns or issuing work.
 
+The current public release contract is RimWorld 1.6 only. Historical support
+branches and payload directories retained in Git are archival and are not
+declared or supported by the current package.
+
 Runtime dependencies:
 
 - RimWorld 1.6
