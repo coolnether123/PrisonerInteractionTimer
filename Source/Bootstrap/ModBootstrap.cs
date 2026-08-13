@@ -17,9 +17,10 @@ namespace PrisonerInteractionTimer.Bootstrap
             : base(
                 content,
                 "CoolNether123.PrisonerInteractionTimer",
-                new SemanticVersion(1, 0, 0),
-                PrisonerInteractionTimerSettings.Definitions,
-                SpineCapability.HarmonyPatching)
+                new SemanticVersion(1, 1, 0),
+                PrisonerInteractionTimerSettings.Schema.Definitions,
+                SpineCapability.HarmonyPatching |
+                SpineCapability.SettingsSchema)
         {
             PrisonerTabPatchInstaller.Install();
             NotificationHookInstaller.Install();

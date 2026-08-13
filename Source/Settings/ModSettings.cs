@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using PrisonerInteractionTimer.Domain;
-using Spine.Api;
 using Spine.UI.SettingsFramework;
 using Verse;
 
@@ -12,84 +10,54 @@ namespace PrisonerInteractionTimer.Settings
     /// </summary>
     public sealed class PrisonerInteractionTimerSettings : ModSettings
     {
-        private static readonly IReadOnlyList<SettingDefinition>
-            DefinitionList = BuildDefinitions();
+        internal static readonly SettingsSchema<
+            PrisonerInteractionTimerSettings> Schema =
+            new SettingsSchema<PrisonerInteractionTimerSettings>(
+                SettingsSchemaConventions.LowerCamelCase);
+
+        static PrisonerInteractionTimerSettings()
+        {
+            var display = Schema.Section(
+                "display.header", "Timer display", "PIT_SettingsDisplayHeader");
+            display.Toggle("display.enabled", settings => settings.FeatureEnabled,
+                "Show prisoner interaction timers",
+                "Adds vanilla readiness timing and blockers to the selected prisoner's Prisoner tab.")
+                .ControlsChildren()
+                .Localized("PIT_SettingsEnabledLabel", "PIT_SettingsEnabledTooltip");
+
+            var children = Schema.Under("display.enabled");
+            children.Enum("display.format", settings => settings.DisplayFormat,
+                "Countdown format", "Choose how remaining game time is shown.",
+                labelProvider: FormatLabel, descriptionProvider: FormatDescription)
+                .Localized("PIT_SettingsFormatLabel", "PIT_SettingsFormatTooltip");
+            children.Toggle("display.reasons", settings => settings.ShowDetailedReasons,
+                "Show detailed blocker explanations",
+                "Lists all currently known vanilla blockers in the timer tooltip.")
+                .Localized("PIT_SettingsReasonsLabel", "PIT_SettingsReasonsTooltip");
+
+            var notifications = Schema.Section(
+                "notifications.header", "Notifications", "PIT_SettingsNotificationsHeader");
+            notifications.Toggle("notifications.enabled",
+                settings => settings.NotificationsEnabled,
+                "Enable per-prisoner ready notifications",
+                "When enabled, the Prisoner tab offers an opt-in alert for the prisoner's current interaction mode. Alerts fire once per not-ready to ready transition.")
+                .Localized("PIT_SettingsNotificationsLabel", "PIT_SettingsNotificationsTooltip");
+        }
 
         public bool FeatureEnabled = true;
-        public TimeDisplayFormat DisplayFormat =
-            TimeDisplayFormat.HumanReadable;
+        public TimeDisplayFormat DisplayFormat = TimeDisplayFormat.HumanReadable;
         public bool ShowDetailedReasons = true;
         public bool NotificationsEnabled;
 
-        public static IReadOnlyList<SettingDefinition> Definitions =>
-            DefinitionList;
-
         public override void ExposeData()
         {
-            SpineApi.Settings.Scribe(this, DefinitionList);
+            Schema.Scribe(this);
             base.ExposeData();
         }
 
-        private static IReadOnlyList<SettingDefinition> BuildDefinitions()
+        private static string FormatLabel(TimeDisplayFormat value)
         {
-            return new[]
-            {
-                SettingDefinitions.Header(
-                    "display.header",
-                    "Timer display",
-                    "PIT_SettingsDisplayHeader"),
-                SettingDefinitions.Toggle(
-                    "display.enabled",
-                    nameof(FeatureEnabled),
-                    "Show prisoner interaction timers",
-                    "PIT_SettingsEnabledLabel",
-                    "Adds vanilla readiness timing and blockers to the " +
-                        "selected prisoner's Prisoner tab.",
-                    "PIT_SettingsEnabledTooltip",
-                    controlsChildren: true,
-                    scribeKey: "featureEnabled"),
-                SettingDefinitions.Enum(
-                    "display.format",
-                    nameof(DisplayFormat),
-                    typeof(TimeDisplayFormat),
-                    "Countdown format",
-                    "PIT_SettingsFormatLabel",
-                    "Choose how remaining game time is shown.",
-                    "PIT_SettingsFormatTooltip",
-                    parentId: "display.enabled",
-                    scribeKey: "displayFormat",
-                    labelProvider: FormatLabel,
-                    descriptionProvider: FormatDescription),
-                SettingDefinitions.Toggle(
-                    "display.reasons",
-                    nameof(ShowDetailedReasons),
-                    "Show detailed blocker explanations",
-                    "PIT_SettingsReasonsLabel",
-                    "Lists all currently known vanilla blockers in the " +
-                        "timer tooltip.",
-                    "PIT_SettingsReasonsTooltip",
-                    parentId: "display.enabled",
-                    scribeKey: "showDetailedReasons"),
-                SettingDefinitions.Header(
-                    "notifications.header",
-                    "Notifications",
-                    "PIT_SettingsNotificationsHeader"),
-                SettingDefinitions.Toggle(
-                    "notifications.enabled",
-                    nameof(NotificationsEnabled),
-                    "Enable per-prisoner ready notifications",
-                    "PIT_SettingsNotificationsLabel",
-                    "When enabled, the Prisoner tab offers an opt-in alert " +
-                        "for the prisoner's current interaction mode. Alerts " +
-                        "fire once per not-ready to ready transition.",
-                    "PIT_SettingsNotificationsTooltip",
-                    scribeKey: "notificationsEnabled")
-            };
-        }
-
-        private static string FormatLabel(object value)
-        {
-            switch ((TimeDisplayFormat)value)
+            switch (value)
             {
                 case TimeDisplayFormat.GameHours:
                     return "PIT_SettingsFormatHours".Translate();
@@ -100,9 +68,9 @@ namespace PrisonerInteractionTimer.Settings
             }
         }
 
-        private static string FormatDescription(object value)
+        private static string FormatDescription(TimeDisplayFormat value)
         {
-            switch ((TimeDisplayFormat)value)
+            switch (value)
             {
                 case TimeDisplayFormat.GameHours:
                     return "PIT_SettingsFormatHoursDescription".Translate();
