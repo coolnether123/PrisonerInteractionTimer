@@ -41,7 +41,7 @@ daily counter when `GenLocalDate.DayTick(pawn)` rolls over.
 
 The shared conditions include prisoner security, spawn state, mental state,
 sleep where required, downed-in-bed handling, reservation/reachability, the
-Warden work assignment, and Talking capacity. Conversion additionally needs
+Warden work assignment, and Talking capacity. Conversion also needs
 a warden of the target ideoligion; reduction-only modes need resistance or
 will remaining; enslavement respects the warden's ideological willingness.
 

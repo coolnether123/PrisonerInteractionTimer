@@ -25,12 +25,12 @@
     <li>brrainz.harmony</li>
     <li>CoolNether123.Spine</li>
   </loadAfter>
-  <description>Shows when a prisoner can next be worked on, and what is stopping you.
+  <description>Shows when a warden can next interact with a prisoner and what is holding them up.
 
 - Live interaction cooldown and next eligible time
 - Which interaction modes are currently active
-- What is blocking one: sleep, incapacity, or no eligible warden
-- Optional per-prisoner and per-mode notifications when one becomes ready
+- Current blockers, such as sleep, incapacity, or no eligible warden
+- Optional notifications when a prisoner becomes ready for a watched mode
 - Reads state only; never changes cooldowns or assigns wardens
 
 Requires Harmony and SpineLib.</description>

@@ -20,7 +20,7 @@
   <PIT_NotScheduled>Not scheduled</PIT_NotScheduled>
   <PIT_WhenConditionsMet>When conditions are met</PIT_WhenConditionsMet>
   <PIT_NotifyThisMode>Notify when ready for this mode</PIT_NotifyThisMode>
-  <PIT_TooltipVanilla>This reports RimWorld's existing interaction gate. It does not alter timing or order a warden.</PIT_TooltipVanilla>
+  <PIT_TooltipVanilla>Shows RimWorld's existing interaction readiness. It does not change timing or send a warden.</PIT_TooltipVanilla>
   <PIT_BlockersHeader>Current blockers:</PIT_BlockersHeader>
   <PIT_ReasonNotPrisoner>Not a colony prisoner.</PIT_ReasonNotPrisoner>
   <PIT_ReasonDisabled>The selected prisoner policy does not schedule a timed interaction.</PIT_ReasonDisabled>
@@ -32,7 +32,7 @@
   <PIT_ReasonInsecure>The prisoner is not currently secure or otherwise available to wardens.</PIT_ReasonInsecure>
   <PIT_ReasonUnspawned>The prisoner is not currently spawned on a map.</PIT_ReasonUnspawned>
   <PIT_ReasonNoWarden>No eligible, reachable warden with the Warden job enabled is available.</PIT_ReasonNoWarden>
-  <PIT_ReasonModeRequirement>No active interaction mode currently has its mode-specific requirements met.</PIT_ReasonModeRequirement>
+  <PIT_ReasonModeRequirement>No active interaction mode meets its specific requirements.</PIT_ReasonModeRequirement>
   <PIT_ReasonUnknown>Waiting for a vanilla eligibility condition.</PIT_ReasonUnknown>
   <PIT_ReadyMessage>{0} is ready for {1}.</PIT_ReadyMessage>
   <PIT_SettingsDisplayHeader>Timer display</PIT_SettingsDisplayHeader>
@@ -41,10 +41,10 @@
   <PIT_SettingsFormatLabel>Countdown format</PIT_SettingsFormatLabel>
   <PIT_SettingsFormatTooltip>Choose how remaining game time is shown.</PIT_SettingsFormatTooltip>
   <PIT_SettingsReasonsLabel>Show detailed blocker explanations</PIT_SettingsReasonsLabel>
-  <PIT_SettingsReasonsTooltip>Lists all currently known vanilla blockers in the timer tooltip.</PIT_SettingsReasonsTooltip>
+  <PIT_SettingsReasonsTooltip>Lists every known base-game blocker in the timer tooltip.</PIT_SettingsReasonsTooltip>
   <PIT_SettingsNotificationsHeader>Notifications</PIT_SettingsNotificationsHeader>
   <PIT_SettingsNotificationsLabel>Enable per-prisoner ready notifications</PIT_SettingsNotificationsLabel>
-  <PIT_SettingsNotificationsTooltip>When enabled, the Prisoner tab offers an opt-in alert for the prisoner's current interaction mode. Alerts fire once per not-ready to ready transition.</PIT_SettingsNotificationsTooltip>
+  <PIT_SettingsNotificationsTooltip>Adds an optional alert for the prisoner's current interaction mode. Each alert fires once when the prisoner becomes ready.</PIT_SettingsNotificationsTooltip>
   <PIT_SettingsFormatHours>Game hours</PIT_SettingsFormatHours>
   <PIT_SettingsFormatTicks>Ticks</PIT_SettingsFormatTicks>
   <PIT_SettingsFormatHuman>Human-readable</PIT_SettingsFormatHuman>

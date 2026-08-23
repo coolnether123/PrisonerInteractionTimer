@@ -1,13 +1,13 @@
 # Prisoner Interaction Timer
 
-Prisoner Interaction Timer exposes RimWorld 1.6's existing prisoner
-interaction timing in the selected prisoner's Prisoner tab. It reports the
-active timed policy, the next eligible game time, and current vanilla blockers
-without changing cooldowns or issuing work.
+Prisoner Interaction Timer shows RimWorld 1.6's prisoner interaction timing in
+the selected prisoner's Prisoner tab. It lists the active timed policy, the
+next eligible game time, and anything in the base game that is blocking the
+interaction. It never changes cooldowns or assigns work.
 
-The current public release contract is RimWorld 1.6 only. Historical support
-branches and payload directories retained in Git are archival and are not
-declared or supported by the current package.
+The current public release supports RimWorld 1.6 only. Older support branches
+and payload directories remain in Git as archives, but they are not part of
+the current package.
 
 Runtime dependencies:
 
@@ -19,8 +19,8 @@ The standalone SpineLib mod supplies the shared settings UI and guarded Harmony
 patch application. Better Work Tab is not a runtime or build dependency.
 
 Alt-click the timer heading, time value, blocker lines, or watch control to
-open and highlight the corresponding setting. The Alt-click is consumed before
-the watch checkbox can change.
+open the matching setting. Doing this on the watch control will not change the
+checkbox.
 
 ## Installation
 
