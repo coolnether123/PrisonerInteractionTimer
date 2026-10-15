@@ -14,5 +14,5 @@ the panel before the watch checkbox so contextual input cannot mutate watch
 state.
 
 Metadata, `Tools\CascadeManifest.json`, project files, and `Tests` define
-support and verification. Follow `A:\Dev\RimWorld\AGENTS.md` for shared
+support and verification. Follow `H:\Dev\RimWorld\AGENTS.md` for shared
 build/runtime work.
